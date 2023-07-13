@@ -18,6 +18,7 @@ body{
 	width: 100%;
 	height: auto;
 	float: left;
+	justify-content: center;
 }
 #grey{
 	width: 50px;
@@ -38,10 +39,10 @@ body{
 	margin-bottom: 1px;
 	background-color: white;
 }
-#ball{
+.ball{
 	width: 40px;
 	height: 40px;
 	margin:5px;
 	border-radius: 50%;
-	background-color: red;
+	background-color: purple;
 }
