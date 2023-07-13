@@ -111,22 +111,31 @@ for (let i = 0; i<clickedBalls; i++){
 
 document.querySelectorAll(".ball")[i].addEventListener("click", function(){
 	// body...
-	alert("Clicked");
+	onclick=createNewElement('.ball');
 });
 	
 }
 
-
-
 function createNewElement() {
   // Create a new div element
-  var newDiv = document.createElement(".ball");
+  var newDiv = document.createElement("div");
 
   // Customize the div element
-  newDiv.innerHTML = "New Element";
-  newDiv.classList.add("highlight");
+  newDiv.innerHTML = "New";
+  newDiv.classList.add("ball");
 
   // Append the div element to the container
-  var container = document.getElementById("container");
-  container.appendChild(newDiv);
+  var grey = document.getElementById("grey");
+  grey.appendChild(newDiv);
 }
+
+
+
+// var parentDiv = document.getElementById("grey");
+// grey.appendChild("ball");
+
+
+
+// var parentElement = document.getElementById("grey");
+// parentElement.appendChild(newDiv);
+  
