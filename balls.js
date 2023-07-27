@@ -76,6 +76,8 @@
 
 
 
+
+
 // function fibonacciGenerator (n) {
 // //Do NOT change any of the code above 👆
     
@@ -98,36 +100,99 @@
 //             return output;
     
     
+
+
+
     
 //     //Return an array of fibonacci numbers starting from 0.
     
 // //Do NOT change any of the code below 👇
 // }
 
+// function printDivs() {
+//       var numDivs = 1; // Number of divs to print
+
+//       for (var i = 0; i < numDivs; i++) {
+//         // Create a new div element
+//         var newDiv = document.createElement("div");
+
+//         // Customize the new div element
+//         newDiv.textContent = "Div " + (i + 1);
+//         newDiv.style.backgroundColor = "yellow";
+
+//         // Append the div to the body element
+//         document.body.appendChild(newDiv);
+//       }
+//     }
 
 
-const clickedBalls = document.querySelectorAll(".ball").length;
-for (let i = 0; i<clickedBalls; i++){
 
-document.querySelectorAll(".ball")[i].addEventListener("click", function(){
-	// body...
-	onclick=createNewElement('.ball');
-});
+//------------------ Printing divs -------------------
+
+// function printDivs() {
+//       var numDivs = 81; // Number of divs to print
+
+//       for (var i = 0; i < numDivs; i++) {
+//         // Create a new div element
+//         var newDiv = document.createElement("div");
+
+//         // Customize the new div element
+//         newDiv.textContent = "Div " + (i + 1);
+//         newDiv.classList.add("grey_square");
+//         // newDiv.style.backgroundColor = "yellow";
+
+//         // Append the div to the body element
+//         main.appendChild(newDiv);
+//       }
+//     }printDivs();
+
+
+
+// Giving uniqe id for each div ------ doesnt work
+
+// var ballsId = document.getElementsByTagName("div"); // Select all div elements
+
+// for (var i = 0; i < div.length; i++) {
+//   var div = div[i];
+//   var id = "div_" + (i + 1); // Generate a unique ID using a pattern or index
+
+//   div.setAttribute("id", id); // Set the ID attribute
+// }
+
+
+
+// From here the code is not working for printing balls 
+
+
+// const clickedBalls = document.querySelectorAll(".ball").length;
+// for (let i = 0; i<clickedBalls; i++){
+
+// document.querySelectorAll(".ball")[i].addEventListener("click", function(){
+// 	// body...
+// 	onclick=createNewElement('.ball');
+// });
 	
-}
+// }
 
-function createNewElement() {
-  // Create a new div element
-  var newDiv = document.createElement("div");
+// function createNewElement() {
+//   // Create a new div element
+//   var newDiv = document.createElement("div");
 
-  // Customize the div element
-  newDiv.innerHTML = "New";
-  newDiv.classList.add("ball");
+//   // Customize the div element
+//   newDiv.innerHTML = "New";
+//   newDiv.classList.add("ball");
 
-  // Append the div element to the container
-  var grey = document.getElementById("grey");
-  grey.appendChild(newDiv);
-}
+//   // Append the div element to the container
+//   var grey = document.getElementById("grey");
+//   grey.appendChild(newDiv);
+// }
+
+
+
+
+// ---------------------------------------------------
+
+
 
 
 
@@ -139,3 +204,44 @@ function createNewElement() {
 // var parentElement = document.getElementById("grey");
 // parentElement.appendChild(newDiv);
   
+let board = [];
+let emptyCells =[];
+const colors = ["red", "blue", "green"];
+function initBoard(boardLength){
+  for (let i=0; i<boardLength**2; i++){
+    board.push(null);
+    emptyCells.push(i);
+    console.log(i);
+  }
+  updateBoard();
+}
+function startGame(){
+  const boardLength = 9;
+  const randomBallsCount =3;
+  initBoard(boardLength);
+  // addRandomBalls();
+}
+startGame();
+
+function updateBoard(){
+    // for (let i = 0; i < board.length; i++) {
+    // const printingDiv = document.createElement("div");
+    // printingDiv.textContent = board[i];
+    // printingDiv.id ="grey";
+    // console.log(printingDiv);
+    // document.getElementsByClassName("container").appendChild(printingDiv);
+
+  const containerElements = document.getElementsByClassName("container");
+
+for (let i = 0; i < board.length; i++) {
+  const printingDiv = document.createElement("div");
+    printingDiv.textContent = board[i];
+    printingDiv.classList.add("grey");
+
+    containerElements.appendChild(printingDiv);
+  }
+}
+
+
+lets understand all this 
+

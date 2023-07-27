@@ -8,7 +8,6 @@ body{
 	width: 480px;
 	height: auto;
 	margin: auto;
-
 	text-align: center;
 	align-items: center;
 	justify-content: center;
@@ -20,7 +19,7 @@ body{
 	float: left;
 	justify-content: center;
 }
-#grey{
+.grey{
 	width: 50px;
 	height: 50px;
 	float: left;
@@ -47,4 +46,21 @@ body{
 	border-radius: 50%;
 	background-color: purple;
 	position:relative;
+}
+.grey_square{
+	width: 50px;
+	height: 50px;
+	float: left;
+	border: 1px solid black;
+	margin-right: 1px;
+	margin-bottom: 1px;
+	background-color: lightgrey;
+}
+.container{
+	width: 480px;
+	height: auto;
+	margin: auto;
+	text-align: center;
+	align-items: center;
+	justify-content: center;
 }
