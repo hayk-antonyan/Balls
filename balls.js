@@ -243,5 +243,4 @@ for (let i = 0; i < board.length; i++) {
 }
 
 
-lets understand all this 
 
