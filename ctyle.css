@@ -46,6 +46,16 @@ body{
 	background-color: purple;
 	position:relative;
 }
+.active{
+	width: 40px;
+	height: 40px;
+	float: left;
+	margin:5px;
+	border-radius: 50%;
+	background-color: purple;
+	position:relative;
+
+}
 #grey_square{
 	width: 50px;
 	height: 50px;

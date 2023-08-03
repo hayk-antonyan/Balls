@@ -122,3 +122,14 @@ function addRandomBalls(){
 function moveBalls(){
 
 }
+
+
+
+function makeActive(clickedDiv) {
+  // Remove "active" class from all divs with the class "clickable"
+  const allDivs = document.querySelectorAll('.clickable');
+  allDivs.forEach((div) => div.classList.remove('active'));
+
+  // Add "active" class to the clicked div
+  clickedDiv.classList.add('active');
+}
