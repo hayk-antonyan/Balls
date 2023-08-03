@@ -20,8 +20,9 @@ function printDivs() {
   function divClickHandler(event) {
     const clickedDiv = event.target;
     console.log('New div clicked!', clickedDiv.textContent);
-    let addBall = document.createElement('div');
-    addBall.appendChild(ball);
+    let ball = document.createElement('div');
+    ball.classList.add("ball");
+    clickedDiv.appendChild(ball);
   }
 
 }printDivs();
