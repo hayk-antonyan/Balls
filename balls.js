@@ -20,10 +20,15 @@ function printDivs() {
   function divClickHandler(event) {
     const clickedDiv = event.target;
     console.log('New div clicked!', clickedDiv.textContent);
-    let ball = document.createElement('div');
-    ball.classList.add("ball");
-    clickedDiv.appendChild(ball);
+     // let ball = document.createElement('div');
+     // let randomID = Math.ceil(Math.random()*9);
+     // ball.classList.add("ball");
+     // ball.setAttribute('id', randomID);
+     // clickedDiv.appendChild(ball);
+     // console.log(randomID);
+     // ball.setAttribute('id', randomID); //random
   }
+  // divClickHandler();
 
 }printDivs();
 
@@ -66,8 +71,8 @@ function startGame(){
   initBoard(boardLength);
   // addRandomBalls();
 }
-
 startGame();
+
 
 function updateBoard(){
 
@@ -78,7 +83,7 @@ function updateBoard(){
     printingDiv.setAttribute('id', 'grey_square');
     printingDiv.textContent = board[i];
     printingDiv.classList.add(".grey");
-    console.log('.grey');
+    console.log('table is printed');
     // containerElements.appendChild('printingDiv'); 
     // document.getElementsByClassName("container").appendChild(printingDiv);
   }
@@ -107,6 +112,7 @@ function updateBoard(){
 
 
 //this code is printing balls 
+
 // document.getElementById("0").onclick = function() {addRandomBalls()};
 // function addRandomBalls() {
 //   let ball = document.createElement("div");
@@ -115,21 +121,37 @@ function updateBoard(){
 // }
 
 
+// randomnumbers 
+function getRandomNumber(start, end) {
+  return Math.floor(Math.random() * (end - start + 1) + start)
+}
+
+const randomNumber = getRandomNumber(0, 81);
+alert(randomNumber);
+
+
+// adding random balls
 function addRandomBalls(){
+  const element = document.getElementById('0');
+  const existingID = element.id;
+  const randomID = Math.random().toString(36).substr(2, 9); // Example: "5drdxjls3"
+  element.setAttribute('id', randomID);
+  console.log("Existing ID:", existingID);
+}addRandomBalls();
 
-}
-
-function moveBalls(){
-
-}
 
 
+// function makeActive(clickedDiv) {
+//   // Remove "active" class from all divs with the class "clickable"
+//   const allDivs = document.querySelectorAll('.clickable');
+//   allDivs.forEach((div) => div.classList.remove('active'));
 
-function makeActive(clickedDiv) {
-  // Remove "active" class from all divs with the class "clickable"
-  const allDivs = document.querySelectorAll('.clickable');
-  allDivs.forEach((div) => div.classList.remove('active'));
+//   // Add "active" class to the clicked div
+//   clickedDiv.classList.add('active');
+// }
 
-  // Add "active" class to the clicked div
-  clickedDiv.classList.add('active');
-}
+
+
+// function moveBalls(){
+
+// }
