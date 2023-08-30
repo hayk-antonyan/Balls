@@ -43,8 +43,12 @@ body{
 	float: left;
 	margin:5px;
 	border-radius: 50%;
-	background-color: purple;
+/*	background-color: purple;*/
 	position:relative;
+	background: radial-gradient(circle at 30% 30%, white, 0);
+  	box-shadow: 3px 3px 6px rgba(0, 0, 0, 0.6);
+  	transform: translateZ(25px);
+
 }
 .active{
 	width: 40px;
@@ -54,7 +58,8 @@ body{
 	border-radius: 50%;
 	background-color: purple;
 	position:relative;
-
+	outline: 2px solid red;
+    outline-offset: 15px;
 }
 #grey_square{
 	width: 50px;

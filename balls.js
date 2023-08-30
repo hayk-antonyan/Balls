@@ -1,37 +1,135 @@
-//------------------ Printing divs -------------------
+// functions:
+// rundomNumber, randomIndex
+// վերցնել զանգվածի դատարկ անդամները և պահել նոր array-ի մեջ, 
+// ամեն անգամ ստուգել դատարկ վանդակները, դրանք հանել ցանկից, ավելացնել գնդակ, նորից ստուգել, նորից ստուգել դատարկ վանդակները,  
 
-function printDivs() {
-  let numDivs = 81; // Number of divs to print
 
-  for (let i = 0; i < numDivs; i++) {
-    // Create a new div element
-    let newDiv = document.createElement("div");
+let board = [];
+let emptyCells =[];
+const colors = ["red", "blue", "green", "yellow", "purple"];
+const boardLength = 9;
 
-    // Customize the new div element
-     // newDiv.textContent = "Div " + (i + 1);
-     newDiv.classList.add("grey");
-     newDiv.setAttribute('id', i);
-     newDiv.style.backgroundColor = "lightgrey";
-     newDiv.addEventListener('click', divClickHandler)
-    // Append the div to the body element
-    main.appendChild(newDiv);
+function initBoard(boardLength){
+  for (let i=0; i<boardLength ** 2; i++){
+    board.push(null);
+    emptyCells.push(i);
+    console.log(i);
   }
+  updateBoard();
+}
 
-  function divClickHandler(event) {
-    const clickedDiv = event.target;
-    console.log('New div clicked!', clickedDiv.textContent);
-     // let ball = document.createElement('div');
-     // let randomID = Math.ceil(Math.random()*9);
-     // ball.classList.add("ball");
-     // ball.setAttribute('id', randomID);
-     // clickedDiv.appendChild(ball);
-     // console.log(randomID);
-     // ball.setAttribute('id', randomID); //random
+function startGame(){
+  const boardLength = 9;
+  const randomBallsCount =3;
+  initBoard(boardLength);
+  addRandomBalls();
+}
+startGame();
+
+//---------------------------------------------------------------------------
+function updateBoard(){
+
+  const containerElement = document.querySelector(".container");
+  
+  
+  for (let i = 0; i < boardLength ** 2; i++) {  
+    const printingDiv = document.createElement("div");
+    printingDiv.setAttribute('id', i);
+    printingDiv.textContent = board[i];
+    printingDiv.classList.add("grey");
+    printingDiv.style.backgroundColor = "lightgrey";
+    containerElement.appendChild(printingDiv);
+    
+    printingDiv.setAttribute('id', i);
+    console.log('table is printed');
   }
-  // divClickHandler();
+};
 
-}printDivs();
+// -------Add a click event listener to all <div> elements on the page ------------------------
+const divElements = document.querySelectorAll('.container div');
 
+divElements.forEach(divElement => {
+  divElement.addEventListener('click', function(event) {
+    const clickedDivId = event.target.id;
+    if (divElement.innerHTML.trim() ===''){
+        this.classList.add("active");
+  }
+    console.log('Clicked div class is active:', clickedDivId);
+
+    // ----Add 3 random balls to the table ------------------------------------------------
+      // for (let i = 0; i < 3; i++) {
+      //   const randomIndex = Math.floor(Math.random() * divElements.length);
+      //   const randomDiv = divElements[randomIndex];
+
+      //   if (randomDiv.innerHTML.trim() === '') {
+      //     const ball = document.createElement('div');
+      //     ball.classList.add('ball');
+      //     const randomColorIndex = Math.floor(Math.random() * colors.length);
+      //     const randomColor = colors[randomColorIndex];
+      //     ball.style.backgroundColor = randomColor;
+      //     randomDiv.appendChild(ball);
+      //   } else {
+      //     i--; // Retry adding a ball if the selected div is not empty -------------------
+      //   }
+      // }
+    
+  });
+});
+
+function addRandomBalls() {
+  const divElements = document.querySelectorAll('.container div');
+
+  for (let i = 0; i < 3; i++) {
+    const randomIndex = Math.floor(Math.random() * divElements.length);
+    const randomDiv = divElements[randomIndex];
+
+    if (randomDiv.innerHTML.trim() === '') {
+      const ball = document.createElement('div');
+      ball.classList.add('ball');
+      const randomColorIndex = Math.floor(Math.random() * colors.length);
+      const randomColor = colors[randomColorIndex];
+      ball.style.backgroundColor = randomColor;
+      randomDiv.appendChild(ball);
+    } else {
+      i--; 
+    }
+  }
+}
+
+
+// -------------------------------------------------------------------------------------
+// function makeActive(clickedDiv) {
+//   // Remove "active" class from all divs with the class "clickable"
+//   const allDivs = document.querySelectorAll('.clickable');
+//   allDivs.forEach((div) => div.classList.remove('active'));
+
+//   // Add "active" class to the clicked div
+//   clickedDiv.classList.add('active');
+// }
+
+
+// -------------------------------------------------------------------------------------
+// function moveBalls(){
+
+// }
+
+// --------- Get random numbers --------------------------------------------------------- 
+
+function getRandomNumber(start, end) {
+  return Math.floor(Math.random() * (end - start + 1) + start)
+}
+const randomNumber = getRandomNumber(0, 81);
+// alert(randomNumber);
+
+
+//------ Add a click event listener to all <div> elements on the page----------------------------------------
+
+// function divClickHandler(event) {
+//   const clickedDiv = event.target.id;
+//   const divElement = document.getElementById('1'); // Replace 'yourDivId' with the actual ID of your <div>
+//   console.log('New div clicked!', clickedDiv.textContent);
+// }
+// divClickHandler();
 
 // From here the code is not working for printing balls 
 
@@ -52,42 +150,7 @@ function printDivs() {
 // parentElement.appendChild(newDiv);
 
   
-let board = [];
-let emptyCells =[];
-const colors = ["red", "blue", "green"];
 
-function initBoard(boardLength){
-  for (let i=0; i<boardLength**2; i++){
-    board.push(null);
-    emptyCells.push(i);
-    console.log(i);
-  }
-  updateBoard();
-}
-
-function startGame(){
-  const boardLength = 9;
-  const randomBallsCount =3;
-  initBoard(boardLength);
-  // addRandomBalls();
-}
-startGame();
-
-
-function updateBoard(){
-
-  const containerElements = document.getElementsByClassName("container");
-
-  for (let i = 0; i < board.length; i++) {
-    const printingDiv = document.createElement("div");
-    printingDiv.setAttribute('id', 'grey_square');
-    printingDiv.textContent = board[i];
-    printingDiv.classList.add(".grey");
-    console.log('table is printed');
-    // containerElements.appendChild('printingDiv'); 
-    // document.getElementsByClassName("container").appendChild(printingDiv);
-  }
-}
 
 // function addRandomBalls(){
 //   let newBall = document.querySelectorAll("ball");
@@ -121,37 +184,18 @@ function updateBoard(){
 // }
 
 
-// randomnumbers 
-function getRandomNumber(start, end) {
-  return Math.floor(Math.random() * (end - start + 1) + start)
-}
-
-const randomNumber = getRandomNumber(0, 81);
-alert(randomNumber);
-
-
-// adding random balls
-function addRandomBalls(){
-  const element = document.getElementById('0');
-  const existingID = element.id;
-  const randomID = Math.random().toString(36).substr(2, 9); // Example: "5drdxjls3"
-  element.setAttribute('id', randomID);
-  console.log("Existing ID:", existingID);
-}addRandomBalls();
 
 
 
-// function makeActive(clickedDiv) {
-//   // Remove "active" class from all divs with the class "clickable"
-//   const allDivs = document.querySelectorAll('.clickable');
-//   allDivs.forEach((div) => div.classList.remove('active'));
+// Adding random balls
+// function addRandomBalls(){
+//   const element = document.getElementById('0');
+//   const existingID = element.id;
+//   const randomID = Math.random().toString(36).substr(2, 9); // Example: "5drdxjls3"
+//   element.setAttribute('id', randomID);
+//   console.log("Existing ID:", existingID);
+// }addRandomBalls();
 
-//   // Add "active" class to the clicked div
-//   clickedDiv.classList.add('active');
-// }
 
 
 
-// function moveBalls(){
-
-// }
