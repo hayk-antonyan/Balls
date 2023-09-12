@@ -1,132 +1,104 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<meta charset="utf-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<link rel="stylesheet" type="text/css" href="ctyle.css">
-	<title>Balls-index</title>
+  <title>Ball Game</title>
+  <style>
+    .container {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+    }
+    .ball {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+    }
+  </style>
 </head>
 <body>
-<div id="score">
-	<span>Your score:Is</span>
-	<span>0</span>
-</div>
-<br>
-<div id="main">
+  <div class="container"></div>
 
-	<!-- <button onclick="createNewElement('.ball')">Click me</button> -->
-  <!-- <div id="gray"></div> -->
-	<div id="line-1">
-		<div id="grey">
-			<div class=" ball"></div>
-		</div>
-		<div id="white">
-			<div class="ball"></div>
-		</div>
-		<div id="grey">
-			<div class="ball"></div>
-		</div>
-		<div id="white">
-			<div class="ball"></div>
-		</div>
-		<div id="grey"></div>
-		<div id="white"></div>
-		<div id="grey"></div>
-		<div id="white"></div>
-		<div id="grey"></div>
-	</div>
-	<div id="line-2">
-		<div id="white"></div>
-		<div id="grey"></div>
-		<div id="white"></div>
-		<div id="grey"></div>
-		<div id="white"></div>
-		<div id="grey"></div>
-		<div id="white"></div>
-		<div id="grey"></div>
-		<div id="white"></div>
-	</div>
-	<div id="line-1">
-		<div id="grey"></div>
-		<div id="white"></div>
-		<div id="grey"></div>
-		<div id="white"></div>
-		<div id="grey"></div>
-		<div id="white"></div>
-		<div id="grey"></div>
-		<div id="white"></div>
-		<div id="grey"></div>
-	</div>
-	<div id="line-2">
-		<div id="white"></div>
-		<div id="grey"></div>
-		<div id="white"></div>
-		<div id="grey"></div>
-		<div id="white"></div>
-		<div id="grey"></div>
-		<div id="white"></div>
-		<div id="grey"></div>
-		<div id="white"></div>
-	</div>
-	<div id="line-1">
-		<div id="grey"></div>
-		<div id="white"></div>
-		<div id="grey"></div>
-		<div id="white"></div>
-		<div id="grey"></div>
-		<div id="white"></div>
-		<div id="grey"></div>
-		<div id="white"></div>
-		<div id="grey"></div>
-	</div>
-	<div id="line-2">
-		<div id="white"></div>
-		<div id="grey"></div>
-		<div id="white"></div>
-		<div id="grey"></div>
-		<div id="white"></div>
-		<div id="grey"></div>
-		<div id="white"></div>
-		<div id="grey"></div>
-		<div id="white"></div>
-	</div>
-	<div id="line-1">
-		<div id="grey"></div>
-		<div id="white"></div>
-		<div id="grey"></div>
-		<div id="white"></div>
-		<div id="grey"></div>
-		<div id="white"></div>
-		<div id="grey"></div>
-		<div id="white"></div>
-		<div id="grey"></div>
-	</div>
-	<div id="line-2">
-		<div id="white"></div>
-		<div id="grey"></div>
-		<div id="white"></div>
-		<div id="grey"></div>
-		<div id="white"></div>
-		<div id="grey"></div>
-		<div id="white"></div>
-		<div id="grey"></div>
-		<div id="white"></div>
-	</div>
-	<div id="line-1">
-		<div id="grey"></div>
-		<div id="white"></div>
-		<div id="grey"></div>
-		<div id="white"></div>
-		<div id="grey"></div>
-		<div id="white"></div>
-		<div id="grey"></div>
-		<div id="white"></div>
-		<div id="grey"></div>
-	</div>
-</div>
+  <script>
+    let board = [];
+    const colors = ["red", "blue", "green", "yellow", "purple"];
+    const boardLength = 9;
 
+    function initBoard(boardLength) {
+      for (let i = 0; i < boardLength ** 2; i++) {
+        board.push(null);
+      }
+      updateBoard();
+    }
+
+    function startGame() {
+      const randomBallsCount = 3;
+      initBoard(boardLength);
+      addRandomBalls(randomBallsCount);
+    }
+    startGame();
+
+    function updateBoard() {
+      const containerElement = document.querySelector(".container");
+      containerElement.innerHTML = ''; // Clear the container
+
+      for (let i = 0; i < boardLength ** 2; i++) {
+        const printingDiv = document.createElement("div");
+        printingDiv.setAttribute('id', i);
+        const ballColor = board[i];
+        if (ballColor) {
+          const ball = document.createElement('div');
+          ball.classList.add('ball');
+          ball.style.backgroundColor = ballColor;
+          printingDiv.appendChild(ball);
+        }
+        containerElement.appendChild(printingDiv);
+      }
+    }
+
+    const containerElement = document.querySelector(".container");
+    containerElement.addEventListener('click', function (event) {
+      const clickedDivId = event.target.id;
+
+      if (board[clickedDivId] === null) {
+        return; // Ignore clicks on empty cells
+      }
+
+      // Find the next empty cell
+      let nextEmptyCellId = null;
+      for (let i = 0; i < board.length; i++) {
+        if (board[i] === null) {
+          nextEmptyCellId = i;
+          break;
+        }
+      }
+
+      if (nextEmptyCellId !== null) {
+        board[nextEmptyCellId] = board[clickedDivId];
+        board[clickedDivId] = null;
+        updateBoard();
+        addRandomBalls(1); // Add a new random ball after moving
+      }
+    });
+
+    function addRandomBalls(count) {
+      for (let i = 0; i < count; i++) {
+        const emptyCells = [];
+        for (let j = 0; j < board.length; j++) {
+          if (board[j] === null) {
+            emptyCells.push(j);
+          }
+        }
+
+        if (emptyCells.length > 0) {
+          const randomIndex = Math.floor(Math.random() * emptyCells.length);
+          const randomEmptyCellId = emptyCells[randomIndex];
+          const randomColorIndex = Math.floor(Math.random() * colors.length);
+          board[randomEmptyCellId] = colors[randomColorIndex];
+        }
+      }
+      updateBoard();
+    }
+  </script>
 </body>
-<script type="text/javascript" src="balls.js">
-
-</script>
 </html>
+s
