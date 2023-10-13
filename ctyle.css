@@ -5,14 +5,30 @@ body{
 	text-align: center;
 }
 #main{
+	width: 100%;
+	height: 100vh;
+	margin:0 auto;
+	float: left;
+	/*text-align: center;
+	align-items: center;
+/*	display: flex;*/
+	justify-content: center;
+    background-color: white;
+
+}
+.container{
 	width: 480px;
 	height: auto;
 	margin: auto;
 	text-align: center;
-	align-items: center;
-	justify-content: center;
-/*	display: flex;*/
+	/*display: flex;
+	justify-content: center;*/
 }
+#score{
+	margin: 20px 0;
+	color: white;
+}
+
 #line-1, #line-2{
 	width: 100%;
 	height: auto;
@@ -26,7 +42,9 @@ body{
 	border: 1px solid black;
 	margin-right: 1px;
 	margin-bottom: 1px;
-	background-color: lightgrey;
+	background-color: white;
+	border-radius: 5px;
+  	opacity: 1;
 }
 #white{
 	width: 50px;
@@ -41,18 +59,19 @@ body{
 	width: 40px;
 	height: 40px;
 	float: left;
-	margin:5px;
+	margin:5px 6px 6px 5px;
 	border-radius: 50%;
 	position:relative;
+/*	border: 1px solid red;*/
   	box-shadow: 3px 3px 6px rgba(0, 0, 0, 0.6);
   	transform: translateZ(25px);
-
+  	opacity: 1;
 }
 .active-ball{
 	width: 40px;
 	height: 40px;
 	float: left;
-	margin:5px;
+	margin:5px 6px 6px 5px;
 	border-radius: 50%;
 	position:relative;
 	outline: 2px solid red;
@@ -67,14 +86,19 @@ body{
 	margin-bottom: 1px;
 	background-color: lightgrey;
 }
-.container{
-	width: 480px;
-	height: auto;
-	margin: auto;
-	text-align: center;
-	align-items: center;
-	justify-content: center;
+
+.red{
+	background-color: red;
 }
-#score{
-	margin-bottom: 20px;
+.blue{
+	background-color: blue;
+}
+.green{
+	background-color: green;
+}
+.yellow{
+	background-color: yellow;
+}
+.purple{
+	background-color: purple;
 }
