@@ -4,6 +4,18 @@
 // ամեն անգամ ստուգել դատարկ վանդակները, դրանք հանել ցանկից, ավելացնել գնդակ, նորից ստուգել, նորից ստուգել դատարկ վանդակները,  
 
 
+// Retrieve totalBallsRemoved from localStorage, or use 0 if it's not set
+let totalBallsRemoved = parseInt(localStorage.getItem("totalBallsRemoved")) || 0;
+
+// Retrieve the value from localStorage for maxScore
+let maxScore = localStorage.getItem("totalBallsRemoved");
+// Convert the retrieved value to a number if it exists, or set it to 0
+maxScore = maxScore ? parseInt(maxScore) : 0;
+
+// Update the content of the <span> element with id "maxScore"
+document.getElementById("maxScore").textContent = maxScore;
+
+
 let board = [];
 const colors = ["red", "blue", "green", "yellow", "purple"];
 
@@ -136,57 +148,40 @@ function addRandomBalls() {
   }
 }
 
-// function printBoard() {
-
-// }
-
-// // Use setTimeout to call printBoard after a delay of 1000 milliseconds (1 second)
-// setTimeout(printBoard, 3000);
-
 // -------------------------------------------------------------------------
 
+// let totalBallsRemoved = 0;
 function handleCellClick(e, i){
   // console.log(e);
 
 const activeBallIndex = board.findIndex(element => element !== null && element.isActive);
-
 // case 1: if board i is empty and activeBall is null => return 
   if( !board[i] && activeBallIndex === -1){
     return;
   }
 // case 2: if board i is empty and activeBall is not null => moveBalls, addRandomBalls, updateBoardView
-
-
 if (!board[i] && activeBallIndex >= 0) {
   moveBalls(activeBallIndex, i);
   const ballsRemoved = removeMatchingBalls();
+  
   // If balls were removed, add new random balls
-  if (ballsRemoved > 0) {
-      let count = 0;
+    
+  if (ballsRemoved > 0) {   
       updateBoardVIew();
-      count ++;
+      // let totalBallsRemoved = 0;
+      totalBallsRemoved = totalBallsRemoved + ballsRemoved;
       console.log(ballsRemoved);
-      // alert(count);
+      document.getElementById("result").innerText = totalBallsRemoved;
+      
+      console.log(totalBallsRemoved);
+      // Save totalBallsRemoved to localStorage
+      localStorage.setItem("totalBallsRemoved", totalBallsRemoved);
   } else {
       addRandomBalls();
       updateBoardVIew();
   }
   return;
 }
-
-
-  // if( !board[i] && activeBallIndex >= 0){
-  //   moveBalls(activeBallIndex, i);
-  //   ballsRemoved = removeMatchingBalls();
-  //   // If no balls were removed, add new random balls
-  // if (!ballsRemoved) {
-  //     addRandomBalls();
-  //     updateBoardVIew();
-  //   }
-  //   // while (removeMatchingBalls()) {} // Remove all matching balls until there are no more matches
-  //   updateBoardVIew();
-  //   return;
-  // }
 
 // case 3: if board i is not empty and activeBall is null => activeBall
   if( board[i] && activeBallIndex === -1){
@@ -243,7 +238,7 @@ let fromIndex = 0;
 let toIndex = 81;
 
 if (moveBalls(fromIndex, toIndex, board)) {
-    console.log("Move successful.");
+    // console.log("Move successful.");
     // console.log("Array after move:", board);
 } else {
     // console.log("Move failed.");
@@ -372,19 +367,23 @@ for (let row = 0; row < rows - 4; row++) {
   return removed;
 }
 
-function myScore(ballsRemoved){
-  let removedCount  = 0;
-  if(ballsRemoved){
-    removedCount  ++;
-  }
-  // console.log(removedCount);
+let removedCount = 0;
+
+function myScore(ballsRemoved) {
+    if (ballsRemoved) {
+        removedCount += ballsRemoved;
+    }
+    return removedCount;
 }
 
-myScore();  
+// Example usage:
+// Call myScore with the number of balls removed to update the count
+let ballsRemoved = removeMatchingBalls();
+let score = myScore(ballsRemoved);
 
-// for (let i = 0; i<1000; i ++){
-//   const currentScore = removeMatchingBalls;
-// } 
+// console.log("Number of balls removed: " + ballsRemoved);
+// console.log("Total score: " + score);
+
 
 
 // function removeBall() {
@@ -396,4 +395,21 @@ myScore();
 //         }
 //     }
 // }
+
+
+
+// var button = document.getElementById("myButton");
+
+//   // Define the function to be executed
+//   function myFunction() {
+//     // Do something when the button is clicked
+//     console.log("Button clicked!");
+
+//     // Remove the event listener after the function is executed
+//     button.removeEventListener("click", myFunction);
+//   }
+
+//   // Add event listener to the button
+//   button.addEventListener("click", myFunction);
+
 

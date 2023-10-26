@@ -8,19 +8,29 @@
 </head>
 <body>
 	<div id="main">
+		<div class="firstPage">
+			<div class="config"><h2>Balls game configuration</h2></div>
+				<div class="beginning">
+					<div class="tableSize col-lg-2">
+						<button class="dropdown">Your score</button> <span id="result"></span>
+					</div>
+					<div class="ballsQty col-lg-2">
+						<button class="dropdown"><a href="balls.html">Reset</a></button>
+					</div>
+				</div>
+				
+		</div>
+		<div class="startGame"><button id="myButton"><a href="index.html">Back to configuration page</a></button></div>
 		<div id="score">
-			<span>Your score is:</span>
-			<span>0</span>
+			<span>Max score:</span>
+			<span id="maxScore"></span>
 		</div>
 		<div class="container" id="table"></div>
-
-		<!-- <div id="grey" class="grey_square">
-			<div class="ball"></div>
-		</div> -->
 
 	</div>
 </body>
 	<script type="text/javascript" src="balls.js">
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 
 	</script>
 </html>
