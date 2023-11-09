@@ -9,21 +9,49 @@
 <body>
 	<div id="main">
 		<div class="firstPage">
-			<div class="config"><h2>Balls game configuration</h2></div>
+			<div class="config">
+				<h1>BALLS</h1>
+				<h2>GAME SETTINGS</h2>
+			</div>
+				<div class="beginning">
+					<div class="tableSize col-lg-2"><button class="dropdown">CHOOSE TABLE SIZE</button>
+						<select id="tableSizeSelect">
+							<option value="9">9</option>
+							<option value="8">8</option>
+							<option value="7">7</option>
+							<option value="6">6</option>
+							<option value="5">5</option>
+						</select>
+					</div>
+					<div class="ballsQty col-lg-2"><button class="dropdown">CHOOSE BALLS QUANTITY</button>
+						<select id="ballsQtySelect">
+							<option value="3">3</option>
+							<option value="4">4</option>
+							<option value="5">5</option>
+						</select>
+					</div>
+				</div>
+				<!-- <div class="startGame"><button><a href="">CONFIRM CHANGES	</a></button></div> -->
+				<div class="startGame"><button id="myButton">START GAME</button></div>
+
+		</div>
+		<div class="firstPage">
+			<!-- <div class="config"><h2>Game configuration</h2></div> -->
 				<div class="beginning">
 					<div class="tableSize col-lg-2">
-						<button class="dropdown">Your score</button> <span id="result"></span>
+						<button class="dropdown">CURRENT SCORE </button>&nbsp<span id="result"> 0 </span><span> points</span>
 					</div>
 					<div class="ballsQty col-lg-2">
-						<button class="dropdown"><a href="balls.html">Reset</a></button>
+						<a href="balls.html"><button id="resetGame" class="dropdown">RESET</button></a>
 					</div>
 				</div>
 				
 		</div>
-		<div class="startGame"><button id="myButton"><a href="index.html">Back to configuration page</a></button></div>
+		<!-- <div class="startGame"><a href="index.html"><button>Back to configuration page</button></a></div> -->
 		<div id="score">
 			<span>Max score:</span>
 			<span id="maxScore"></span>
+			<span> points</span>
 		</div>
 		<div class="container" id="table"></div>
 

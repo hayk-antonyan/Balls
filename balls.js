@@ -5,7 +5,10 @@
 
 
 // Retrieve totalBallsRemoved from localStorage, or use 0 if it's not set
-let totalBallsRemoved = parseInt(localStorage.getItem("totalBallsRemoved")) || 0;
+
+let randomBallsCount;
+let totalBallsRemoved = 0;
+let boardLength;
 
 // Retrieve the value from localStorage for maxScore
 let maxScore = localStorage.getItem("totalBallsRemoved");
@@ -15,31 +18,78 @@ maxScore = maxScore ? parseInt(maxScore) : 0;
 // Update the content of the <span> element with id "maxScore"
 document.getElementById("maxScore").textContent = maxScore;
 
-
 let board = [];
-const colors = ["red", "blue", "green", "yellow", "purple"];
+const colors = ["red", "blue", "green"];
 
 function initBoard(boardLength){
+
+  board = []; // Clear the board array before initializing
   for (let i=0; i<boardLength ** 2; i++){
     board.push(null);
   }
 }
 
-function startGame(){
-  const boardLength = 9;
-  const randomBallsCount = 3;
-  initBoard(boardLength);
-  creatBoardView();
-  addRandomBalls();
-  updateBoardVIew();
+// function startGame(){
+//   let boardLength = 9;
+//   const randomBallsCount = 3;
+//   initBoard(boardLength);
+//   creatBoardView();
+//   addRandomBalls();
+//   updateBoardVIew();
+// }
+// startGame();
+
+// Function to get selected option values and start the game
+function startGame() {
+    // Get selected table size value
+    let tableSizeSelect = document.getElementById("tableSizeSelect");
+    boardLength = tableSizeSelect.value;
+
+    // Get selected balls quantity value
+    let ballsQtySelect = document.getElementById("ballsQtySelect");
+    let randomBallsCount = ballsQtySelect.value;
+
+    // Clear the board
+    board = [];
+    initBoard(boardLength);
+
+    // Clear the container element in the DOM
+    const containerElement = document.querySelector(".container");
+    containerElement.innerHTML = "";
+
+    // Initialize the board with the selected size
+    initBoard(boardLength);
+    creatBoardView();
+    addRandomBalls(randomBallsCount);
+    updateBoardVIew();
+
+    // Calculate the width of each cell in pixels (assuming it's stored in a variable called 'cellWidth')
+    const cellWidth = 53; // Change this value based on your requirements
+
+    // Calculate the total width of the container based on the boardLength and cellWidth
+    const totalWidth = boardLength * cellWidth;
+
+    // Get the .container element
+    const container = document.querySelector(".container");
+
+    // Set the width of the container dynamically
+    container.style.width = totalWidth + "px";
 }
 startGame();
+
+// Add event listener to the "START GAME" button
+document.getElementById("myButton").addEventListener("click", function() {
+  startGame();
+  handleCellClick(null, null, 0);
+});
 
 //---------------------------------------------------------------------------
 function creatBoardView(){
 
   const containerElement = document.querySelector(".container");
   
+  // Clear the container element before adding new cells
+  containerElement.innerHTML = "";
   
   for (let i = 0; i < board.length; i++) {  
     const printingDiv = document.createElement("div");
@@ -53,41 +103,9 @@ function creatBoardView(){
   }
 };
 
-// function updateBoardVIew() {
-//   console.log(board);
-//   for (let i = 0; i < board.length; i++) {
-//       const cell = document.getElementById(i);
-//       const element = board[i];
-
-//       if (element) {
-//           const color = colors[element.colorIndex];
-          
-//           // Create a new colored div element
-//           const ballDiv = document.createElement("div");
-//           ballDiv.classList.add("ball", color);
-          
-//           // Remove any existing child elements and append the new colored div
-//           while (cell.firstChild) {
-//               cell.removeChild(cell.firstChild);
-//           }
-//           cell.appendChild(ballDiv);
-
-//           if (element.isActive) {
-//               cell.classList.add('active-ball');
-//           } else {
-//               cell.classList.remove('active-ball');
-//           }
-
-//       } else {
-//           cell.classList.remove(...cell.classList);
-//           cell.classList.add('grey');
-//       }
-//   }
-// }
-
 
 function updateBoardVIew(){
-  // console.log(board);
+  
   for (let i = 0; i < board.length; i++){
     const cell = document.getElementById(i);
     const element = board[i];
@@ -137,23 +155,24 @@ function getRandomColorIndex(){
   return randomColorIndex;
   alert("This is randomcolor index " + randomColorIndex);
 }
-
-function addRandomBalls() {
-
-  for (let i = 0; i < 3; i++) {
-    const emptyCells =  getEmptyCells();
-    const randomBoardIndex = getRandomBoardIndex(emptyCells); 
-    const randomColor = getRandomColorIndex();
-    board[randomBoardIndex] = {colorIndex: randomColor, isActive: false};
-  }
-}
-
 // -------------------------------------------------------------------------
-
-// let totalBallsRemoved = 0;
-function handleCellClick(e, i){
-  // console.log(e);
-
+function addRandomBalls(randomBallsCount) {
+  let ballsAdded = 0;
+  for (let i = 0; i < randomBallsCount; i++) {
+      const emptyCells = getEmptyCells();
+      if (emptyCells.length > 0) {
+          let randomBoardIndex = getRandomBoardIndex(emptyCells);
+          const randomColor = getRandomColorIndex();
+          board[randomBoardIndex] = { colorIndex: randomColor, isActive: false };
+          ballsAdded++;
+          console.log("The balls are added "+ ballsAdded);
+      }
+  }
+  return ballsAdded;
+}
+// -------------------------------------------------------------------------
+function handleCellClick(e, i, ballsAdded){
+  
 const activeBallIndex = board.findIndex(element => element !== null && element.isActive);
 // case 1: if board i is empty and activeBall is null => return 
   if( !board[i] && activeBallIndex === -1){
@@ -162,23 +181,26 @@ const activeBallIndex = board.findIndex(element => element !== null && element.i
 // case 2: if board i is empty and activeBall is not null => moveBalls, addRandomBalls, updateBoardView
 if (!board[i] && activeBallIndex >= 0) {
   moveBalls(activeBallIndex, i);
-  const ballsRemoved = removeMatchingBalls();
+  let ballsRemoved = removeMatchingBalls();
   
   // If balls were removed, add new random balls
-    
   if (ballsRemoved > 0) {   
       updateBoardVIew();
-      // let totalBallsRemoved = 0;
-      totalBallsRemoved = totalBallsRemoved + ballsRemoved;
-      console.log(ballsRemoved);
+      // totalBallsRemoved === 0;
+      totalBallsRemoved = totalBallsRemoved + ballsRemoved * 5;
       document.getElementById("result").innerText = totalBallsRemoved;
       
-      console.log(totalBallsRemoved);
       // Save totalBallsRemoved to localStorage
       localStorage.setItem("totalBallsRemoved", totalBallsRemoved);
-  } else {
-      addRandomBalls();
+      const newBallsAdded  = addRandomBalls(randomBallsCount);
+      console.log("Passed balls qty is" + ballsAdded);
       updateBoardVIew();
+      handleCellClick(null, null, newBallsAdded);
+  } else {
+    addRandomBalls(5); //MUST BE NOT HARD CODED
+      console.log("Added balls after moving is " + randomBallsCount);
+      updateBoardVIew();
+      handleCellClick(null, null, ballsAdded);
   }
   return;
 }
@@ -193,7 +215,7 @@ if (!board[i] && activeBallIndex >= 0) {
 // case 4: if board i is not empty and activeBall is not null, make clicked ball activ and TURN ACTIVE BALL PASSIVE;
   if( board[i] && activeBallIndex >= 0){
 
-    activeBall(i); //HERE ACTIVE BALL DOESNT TURN PASSIVE
+    activeBall(i);
     updateBoardVIew();
     return;
   } 
@@ -248,10 +270,10 @@ if (moveBalls(fromIndex, toIndex, board)) {
 
 function removeMatchingBalls() {
 
-  const rows = 9; // Number of rows on the board
-  const cols = 9; // Number of columns on the board
+  let rows = 9; // Number of rows on the board --- NEED TO BE CHANGED from hard code to variable
+  let cols = 9; // Number of columns on the board --- NEED TO BE CHANGED from hard code to variable
   let removed = false; // Flag to track if any balls were removed
-
+  console.log("Rows value is " + boardLength) // RETURNS UNDEFINED
   // Check for horizontal matches
   for (let row = 0; row < rows; row++) {
       for (let col = 0; col < cols - 2; col++) {
@@ -264,17 +286,17 @@ function removeMatchingBalls() {
               // Check if the next two cells in the row have the same color
               if (
                   board[currentIndex + 1]?.colorIndex === colorIndex &&
-                  board[currentIndex + 2]?.colorIndex === colorIndex &&
-                  board[currentIndex + 3]?.colorIndex === colorIndex &&
-                  board[currentIndex + 4]?.colorIndex === colorIndex
+                  board[currentIndex + 2]?.colorIndex === colorIndex 
+                  // board[currentIndex + 3]?.colorIndex === colorIndex &&
+                  // board[currentIndex + 4]?.colorIndex === colorIndex
 
                ) {
                   // Found a horizontal match of three balls of the same color
                   board[currentIndex] = null;
                   board[currentIndex + 1] = null;
                   board[currentIndex + 2] = null;
-                  board[currentIndex + 3] = null;
-                  board[currentIndex + 4] = null;
+                  // board[currentIndex + 3] = null;
+                  // board[currentIndex + 4] = null;
 
                   removed = true;
               }
@@ -294,17 +316,17 @@ function removeMatchingBalls() {
               // Check if the next two cells in the column have the same color
               if (
                   board[currentIndex + cols]?.colorIndex === colorIndex &&
-                  board[currentIndex + 2 * cols]?.colorIndex === colorIndex &&
-                  board[currentIndex + 3 * cols]?.colorIndex === colorIndex &&
-                  board[currentIndex + 4 * cols]?.colorIndex === colorIndex
+                  board[currentIndex + 2 * cols]?.colorIndex === colorIndex
+                  // board[currentIndex + 3 * cols]?.colorIndex === colorIndex &&
+                  // board[currentIndex + 4 * cols]?.colorIndex === colorIndex
 
               ) {
                   // Found a vertical match of three balls of the same color
                   board[currentIndex] = null;
                   board[currentIndex + cols] = null;
                   board[currentIndex + 2 * cols] = null;
-                  board[currentIndex + 3 * cols] = null;
-                  board[currentIndex + 4 * cols] = null;
+                  // board[currentIndex + 3 * cols] = null;
+                  // board[currentIndex + 4 * cols] = null;
 
                   removed = true;
               }
@@ -313,8 +335,8 @@ function removeMatchingBalls() {
   }
 
    // Check for diagonal matches (from top-left to bottom-right)
-   for (let row = 0; row < rows - 4; row++) {
-    for (let col = 0; col < cols - 4; col++) {
+   for (let row = 0; row < rows - 2; row++) {
+    for (let col = 0; col < cols - 2; col++) {
         const currentIndex = row * cols + col;
         const currentCell = board[currentIndex];
 
@@ -324,12 +346,12 @@ function removeMatchingBalls() {
             // Check if the next four cells diagonally have the same color
             if (
                 board[currentIndex + cols + 1]?.colorIndex === colorIndex &&
-                board[currentIndex + 2 * cols + 2]?.colorIndex === colorIndex &&
-                board[currentIndex + 3 * cols + 3]?.colorIndex === colorIndex &&
-                board[currentIndex + 4 * cols + 4]?.colorIndex === colorIndex
+                board[currentIndex + 2 * cols + 2]?.colorIndex === colorIndex
+                // board[currentIndex + 3 * cols + 3]?.colorIndex === colorIndex &&
+                // board[currentIndex + 4 * cols + 4]?.colorIndex === colorIndex
             ) {
                 // Found a diagonal match of five balls of the same color
-                for (let i = 0; i < 5; i++) {
+                for (let i = 0; i < 3; i++) {
                     board[currentIndex + i * (cols + 1)] = null;
                 }
                 removed = true;
@@ -339,8 +361,8 @@ function removeMatchingBalls() {
 }
 
 // Check for diagonal matches (from top-right to bottom-left)
-for (let row = 0; row < rows - 4; row++) {
-    for (let col = 4; col < cols; col++) {
+for (let row = 0; row < rows - 2; row++) {
+    for (let col = 2; col < cols; col++) {
         const currentIndex = row * cols + col;
         const currentCell = board[currentIndex];
 
@@ -350,12 +372,12 @@ for (let row = 0; row < rows - 4; row++) {
             // Check if the next four cells diagonally have the same color
             if (
                 board[currentIndex + cols - 1]?.colorIndex === colorIndex &&
-                board[currentIndex + 2 * cols - 2]?.colorIndex === colorIndex &&
-                board[currentIndex + 3 * cols - 3]?.colorIndex === colorIndex &&
-                board[currentIndex + 4 * cols - 4]?.colorIndex === colorIndex
+                board[currentIndex + 2 * cols - 2]?.colorIndex === colorIndex
+                // board[currentIndex + 3 * cols - 3]?.colorIndex === colorIndex &&
+                // board[currentIndex + 4 * cols - 4]?.colorIndex === colorIndex
             ) {
                 // Found a diagonal match of five balls of the same color
-                for (let i = 0; i < 5; i++) {
+                for (let i = 0; i < 3; i++) {
                     board[currentIndex + i * (cols - 1)] = null;
                 }
                 removed = true;
@@ -386,30 +408,34 @@ let score = myScore(ballsRemoved);
 
 
 
-// function removeBall() {
-//     for (let i = 0; i < board.length; i++) {
-//         const cell = board[i];
-//         if (cell && cell.isActive) {
-//           cell.isActive = false
-//           // board[i] = null;
-//         }
-//     }
-// }
+// function updateBoardVIew() {
+//   console.log(board);
+//   for (let i = 0; i < board.length; i++) {
+//       const cell = document.getElementById(i);
+//       const element = board[i];
 
+//       if (element) {
+//           const color = colors[element.colorIndex];
+          
+//           // Create a new colored div element
+//           const ballDiv = document.createElement("div");
+//           ballDiv.classList.add("ball", color);
+          
+//           // Remove any existing child elements and append the new colored div
+//           while (cell.firstChild) {
+//               cell.removeChild(cell.firstChild);
+//           }
+//           cell.appendChild(ballDiv);
 
+//           if (element.isActive) {
+//               cell.classList.add('active-ball');
+//           } else {
+//               cell.classList.remove('active-ball');
+//           }
 
-// var button = document.getElementById("myButton");
-
-//   // Define the function to be executed
-//   function myFunction() {
-//     // Do something when the button is clicked
-//     console.log("Button clicked!");
-
-//     // Remove the event listener after the function is executed
-//     button.removeEventListener("click", myFunction);
+//       } else {
+//           cell.classList.remove(...cell.classList);
+//           cell.classList.add('grey');
+//       }
 //   }
-
-//   // Add event listener to the button
-//   button.addEventListener("click", myFunction);
-
-
+// }

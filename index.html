@@ -1,43 +1,39 @@
-<!DOCTYPE html>
-<html>
-<head>
-	<meta charset="utf-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<link rel="stylesheet" type="text/css" href="ctyle.css">
-	<title>Index</title>
-</head>
-<body>
-	<div id="main">
-		<div class="firstPage">
-			<div class="config"><h2>BAAL GAME SETTINGS</h2></div>
-				<div class="beginning">
-					<div class="tableSize col-lg-2"><button class="dropdown">CHOOSE TABLE SIZE</button>
-						<select>
-							<option>5</option>
-							<option>6</option>
-							<option>7</option>
-							<option>8</option>
-							<option>9</option>
-							<option>10</option>
-						</select>
+	<!DOCTYPE html>
+	<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<link rel="stylesheet" type="text/css" href="ctyle.css">
+		<title>Index</title>
+	</head>
+	<body>
+		<div id="main">
+			<div class="firstPage">
+				<div class="config"><h2>BAAL GAME SETTINGS</h2></div>
+					<div class="beginning">
+						<div class="tableSize col-lg-2"><button class="dropdown">TABLE SIZE</button>
+							<select id="tableSizeSelect">
+								<option>9</option>
+								<option>8</option>
+								<option>7</option>
+								<option>6</option>
+								<option>5</option>
+							</select>
+						</div>
+						<div class="ballsQty col-lg-2"><button class="dropdown">BALLS QUANTITY</button>
+							<select id="ballsQtySelect">
+								<option>3</option>
+								<option>4</option>
+								<option>5</option>
+							</select>
+						</div>
 					</div>
-					<div class="ballsQty col-lg-2"><button class="dropdown">CHOOSE BALLS QUANTITY</button>
-						<select>
-							<option>3</option>
-							<option>4</option>
-							<option>5</option>
-						</select>
-					</div>
-				</div>
-				<div class="startGame"><button id="myButton" ><a href="balls.html">START GAME</a></button></div>
+					<div class="startGame"><button><a href="balls.html">CONFIRM CHANGES	</a></button></div>
+			</div>
 		</div>
-		
-		<!-- <div class="container" id="table"></div> -->
+	</body>
+		<script type="text/javascript" src="balls.js">
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 
-	</div>
-</body>
-	<script type="text/javascript" src="balls.js">
-	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
-
-	</script>
-</html>
+		</script>
+	</html>

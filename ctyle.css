@@ -1,8 +1,15 @@
 /**{
 	background: grey;
 }*/
+html{
+	width: 100%;
+	height: auto;
+}
 body{
 	text-align: center;
+	margin: 0 auto;
+	font-family:"FONT NAME", Helvetica, sans-serif;
+	font-weight: bold;
 }
 #main{
 	width: 100%;
@@ -17,16 +24,17 @@ body{
 
 }
 .container{
-	width: 480px;
+	width: 100%;
 	height: auto;
 	margin: auto;
 	text-align: center;
-	/*display: flex;
-	justify-content: center;*/
+	/* display: flex;
+	justify-content: center; */
 }
 #score{
-	margin: 20px 0;
+	margin: 15px 0;
 	color: black;
+	font-weight: bold;
 }
 
 #line-1, #line-2{
@@ -112,19 +120,15 @@ body{
 .config{
 	width: 100%;
 	height: auto;
-	margin: 30px 0;
+	margin: 20px 0;
 }
 .tableSize{
-	width: 35%;
+	width: 50%;
 	height: auto;
-	margin-left:15%;
-	margin-right: 0%;
 }
 .ballsQty{
-	width: 35%;
+	width: 50%;
 	height: auto;
-	margin-left:0%;
-	margin-right: 15%;
 }
 .tableSize ul{
 	display: none;
@@ -137,6 +141,12 @@ body{
 	border: 1px solid black;
 	padding: 5px;
 	font-weight: bold;
+	cursor: pointer;
+	font-weight: bold;
+}
+.dropdown a{
+	text-decoration: none;
+	
 }
 select option{
 	border: 2px solid black;
@@ -151,7 +161,7 @@ select{
 .startGame{
 	width: 100%;
 	height: auto;
-	margin: 30px 0;
+	margin: 20px 0 10px 0;
 }
 .startGame button{
 	background-color: rgb(0, 255, 13);
@@ -160,4 +170,7 @@ select{
 }
 .startGame a{
 	text-decoration: none;
+}
+#resetGame{
+	background-color: orange;
 }
