@@ -6,14 +6,20 @@ html{
 	height: auto;
 }
 body{
+	width:100%;
+	height: auto;
 	text-align: center;
 	margin: 0 auto;
 	font-family:"FONT NAME", Helvetica, sans-serif;
-	font-weight: bold;
+	font-weight: bold !important;
 }
+/* @font-face {
+    font-family: RobotoRegular;
+    src: url(fonts/Roboto-Regular.woff);
+} */
 #main{
 	width: 100%;
-	height: 100vh;
+	height: auto;
 	margin:0 auto;
 	float: left;
 	/*text-align: center;
@@ -21,7 +27,9 @@ body{
 /*	display: flex;*/
 	justify-content: center;
     background-color: white;
-
+}
+.firstPage{
+	width: 100%;
 }
 .container{
 	width: 100%;
@@ -32,9 +40,12 @@ body{
 	justify-content: center; */
 }
 #score{
-	margin: 15px 0;
+	width: 20%;
+	margin: 10px 40%;
 	color: black;
-	font-weight: bold;
+	float: left;
+	text-align: center;
+	justify-content: center;
 }
 
 #line-1, #line-2{
@@ -111,56 +122,70 @@ body{
 .purple{
 	background-color: purple;
 }
-
 .beginning{
 	width: 40%;
 	margin: 20px 30%;
-	display: flex;
+	position: relative;
 }
 .config{
 	width: 100%;
 	height: auto;
 	margin: 20px 0;
 }
+.config h1{
+	margin-top:0;
+}
 .tableSize{
 	width: 50%;
 	height: auto;
+	float: left;
+	display: inline-block;
 }
-.ballsQty{
-	width: 50%;
-	height: auto;
-}
-.tableSize ul{
-	display: none;
-}
-.dropdown{
+.tableSizeTitle{
 	width: 70%;
 	height: auto;
 	text-align: center;
 	background-color: white;
 	border: 1px solid black;
 	padding: 5px;
-	font-weight: bold;
 	cursor: pointer;
-	font-weight: bold;
+	display: inline-block;
 }
-.dropdown a{
-	text-decoration: none;
-	
+#tableSizeSelect, #ballsQtySelect{
+	width: auto;
+	height: auto;
+	padding: 5px;
 }
 select option{
 	border: 2px solid black;
-	/* background-color: aqua; */
-	font-weight: bold;
+	/* font-weight: bold; */
 }
-select{
-	/* background-color: aqua; */
-	font-weight: bold;
-	padding: 5px;
+.select{
+	display: inline-block;
+}
+.ballsQty{
+	width: 50%;
+	height: auto;
+	float: left;
+	display: inline-block;
+}
+.reset_section{
+	width: 20%;
+	height: auto;
+	margin:0 40% 20px 40%;	
+}
+.reset_button{
+	border-radius: 5px;
+	padding: 5px 32px;
+	background-color: rgb(255, 136, 0);
+}
+.tableSize ul{
+	display: none;
 }
 .startGame{
 	width: 100%;
 	height: auto;
+	float: left;
 	margin: 20px 0 10px 0;
 }
 .startGame button{
@@ -173,4 +198,89 @@ select{
 }
 #resetGame{
 	background-color: orange;
+}
+
+@media  (min-width: 768px) and (max-width: 1366px){
+
+	.beginning{
+		width: 50%;
+		height: auto;
+		margin: 0 25%;
+		padding: 0;
+		position: relative;
+	}
+	.tableSize{
+		width: 100%;
+		float: left;
+		display: block;
+		margin: 20px 0;
+		padding: 0;
+	}
+	.ballsQty{
+		width: 100%;
+		float: left;
+		display: block;
+		margin: 0;
+		padding: 0;
+	} 
+	#score{
+		width: 100%;
+		margin: 10px 0;
+	}
+
+	/* .grey{
+		width: 40px;
+		height: 40px;
+	}
+	#white{
+		width: 40px;
+		height: 40px;
+	}
+	.ball{
+		width: 30px;
+		height: 30px;
+	}
+	.active-ball{
+		width: 30px;
+		height: 30px;
+	}
+	#grey_square{
+		width: 40px;
+		height: 40px;
+	} */
+}
+
+
+@media  (min-width: 200px) and (max-width: 767px){
+
+	.beginning{
+		width: 70%;
+		height: auto;
+		margin: 0 15%;
+		padding: 0;
+		position: relative;
+	}
+	.tableSize{
+		width: 100%;
+		float: left;
+		display: block;
+		margin: 15px 0;
+		padding: 0;
+	}
+	.ballsQty{
+		width: 100%;
+		float: left;
+		display: block;
+		margin: 0;
+		padding: 0;
+	} 
+	#score{
+		width: 100%;
+		margin: 10px 0;
+	}
+	.reset_section {
+		width: 50%;
+		height: auto;
+		margin: 0 25% 20px 25%;
+	}
 }

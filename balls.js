@@ -6,9 +6,22 @@
 
 // Retrieve totalBallsRemoved from localStorage, or use 0 if it's not set
 
-let randomBallsCount;
+let randomBallsCount = 3;
 let totalBallsRemoved = 0;
-let boardLength;
+let boardLength = 9;
+
+// Get selected balls quantity value
+let ballsQtySelect = document.getElementById("ballsQtySelect");
+ballsQtySelect.addEventListener("change", function() {
+  // Update the randomBallsCount variable with the selected value
+  randomBallsCount = ballsQtySelect.value;
+});
+
+// Get selected balls quantity value
+let tableSizeSelect = document.getElementById("tableSizeSelect");
+tableSizeSelect.addEventListener("change", function() {
+  boardLength = tableSizeSelect.value*1;
+});
 
 // Retrieve the value from localStorage for maxScore
 let maxScore = localStorage.getItem("totalBallsRemoved");
@@ -24,7 +37,7 @@ const colors = ["red", "blue", "green"];
 function initBoard(boardLength){
 
   board = []; // Clear the board array before initializing
-  for (let i=0; i<boardLength ** 2; i++){
+  for (let i = 0; i<boardLength ** 2; i++){
     board.push(null);
   }
 }
@@ -41,14 +54,7 @@ function initBoard(boardLength){
 
 // Function to get selected option values and start the game
 function startGame() {
-    // Get selected table size value
-    let tableSizeSelect = document.getElementById("tableSizeSelect");
-    boardLength = tableSizeSelect.value;
-
-    // Get selected balls quantity value
-    let ballsQtySelect = document.getElementById("ballsQtySelect");
-    let randomBallsCount = ballsQtySelect.value;
-
+    
     // Clear the board
     board = [];
     initBoard(boardLength);
@@ -63,8 +69,21 @@ function startGame() {
     addRandomBalls(randomBallsCount);
     updateBoardVIew();
 
+
+
     // Calculate the width of each cell in pixels (assuming it's stored in a variable called 'cellWidth')
-    const cellWidth = 53; // Change this value based on your requirements
+    let cellWidth;
+
+    if (window.innerWidth >= 1366) {
+        cellWidth = 53; // Set a default value for larger screens
+        console.log("Window width is " + window.innerWidth + " px");
+    } else if (window.innerWidth >= 768) {
+        cellWidth = 42; // Adjust this value for medium-sized screens
+    } else {
+        cellWidth = 33; // Adjust this value for smaller screens
+    }
+
+
 
     // Calculate the total width of the container based on the boardLength and cellWidth
     const totalWidth = boardLength * cellWidth;
@@ -128,6 +147,38 @@ function updateBoardVIew(){
 }
 
 
+// function updateBoardVIew() {
+//   for (let i = 0; i < board.length; i++) {
+//       const cell = document.getElementById(i);
+//       const element = board[i];
+
+//       if (element) {
+//           const color = colors[element.colorIndex];
+          
+//           // Create a new colored div element
+//           const ballDiv = document.createElement("div");
+//           ballDiv.classList.add("ball", color);
+          
+//           // Remove any existing child elements and append the new colored div
+//           while (cell.firstChild) {
+//               cell.removeChild(cell.firstChild);
+//           }
+//           cell.appendChild(ballDiv);
+
+//           if (element.isActive) {
+//               cell.classList.add('active-ball');
+//           } else {
+//               cell.classList.remove('active-ball');
+//           }
+
+//       } else {
+//           cell.classList.remove(...cell.classList);
+//           cell.classList.add('grey');
+//       }
+//   }
+// }
+
+
 // -------------- Get empty cells ----------------------------------------
 
 function getEmptyCells() {
@@ -137,8 +188,7 @@ function getEmptyCells() {
       emptyCells.push(i);
     }
   }
-  return emptyCells;
-  // console.log(emptyCells);    
+  return emptyCells;   
 } 
 
 
@@ -146,17 +196,16 @@ function getRandomBoardIndex(emptyCells){
 
   const randomCellIndex = Math.floor(Math.random() * emptyCells.length);
   return emptyCells[randomCellIndex];
-  alert("This is randomcell index " + randomCellIndex);
 }
 
 function getRandomColorIndex(){
 
   const randomColorIndex = Math.floor(Math.random() * colors.length);
   return randomColorIndex;
-  alert("This is randomcolor index " + randomColorIndex);
 }
 // -------------------------------------------------------------------------
 function addRandomBalls(randomBallsCount) {
+  console.log("Received randomBallsCount:", randomBallsCount);
   let ballsAdded = 0;
   for (let i = 0; i < randomBallsCount; i++) {
       const emptyCells = getEmptyCells();
@@ -165,13 +214,13 @@ function addRandomBalls(randomBallsCount) {
           const randomColor = getRandomColorIndex();
           board[randomBoardIndex] = { colorIndex: randomColor, isActive: false };
           ballsAdded++;
-          console.log("The balls are added "+ ballsAdded);
+          // console.log("The balls are added "+ ballsAdded);
       }
   }
   return ballsAdded;
 }
 // -------------------------------------------------------------------------
-function handleCellClick(e, i, ballsAdded){
+async function handleCellClick(e, i, ballsAdded){
   
 const activeBallIndex = board.findIndex(element => element !== null && element.isActive);
 // case 1: if board i is empty and activeBall is null => return 
@@ -181,8 +230,8 @@ const activeBallIndex = board.findIndex(element => element !== null && element.i
 // case 2: if board i is empty and activeBall is not null => moveBalls, addRandomBalls, updateBoardView
 if (!board[i] && activeBallIndex >= 0) {
   moveBalls(activeBallIndex, i);
-  let ballsRemoved = removeMatchingBalls();
-  
+  let ballsRemoved = removeMatchingBalls(boardLength);
+  console.log("Passed balls qty is " + boardLength);
   // If balls were removed, add new random balls
   if (ballsRemoved > 0) {   
       updateBoardVIew();
@@ -192,15 +241,26 @@ if (!board[i] && activeBallIndex >= 0) {
       
       // Save totalBallsRemoved to localStorage
       localStorage.setItem("totalBallsRemoved", totalBallsRemoved);
-      const newBallsAdded  = addRandomBalls(randomBallsCount);
-      console.log("Passed balls qty is" + ballsAdded);
+
+      // Use async function to wait for the board to be updated before calling addRandomBalls
+      await new Promise(resolve => setTimeout(resolve, 0));
+
+      // const newBallsAdded  = addRandomBalls(randomBallsCount);
+      
       updateBoardVIew();
-      handleCellClick(null, null, newBallsAdded);
+
+      setTimeout(() => {
+        handleCellClick(null, null);
+    }, 0);
+
   } else {
-    addRandomBalls(5); //MUST BE NOT HARD CODED
-      console.log("Added balls after moving is " + randomBallsCount);
+      addRandomBalls(randomBallsCount);
+      // const ballsAddedAfterMove = addRandomBalls(randomBallsCount);
+      console.log("Added balls after moving are " + randomBallsCount);
       updateBoardVIew();
-      handleCellClick(null, null, ballsAdded);
+      setTimeout(() => {
+        handleCellClick(null, null);
+    }, 0);
   }
   return;
 }
@@ -209,7 +269,6 @@ if (!board[i] && activeBallIndex >= 0) {
   if( board[i] && activeBallIndex === -1){
     activeBall(i);   
     updateBoardVIew();
-    // console.log("This part is updated" + i);
     return;
   }
 // case 4: if board i is not empty and activeBall is not null, make clicked ball activ and TURN ACTIVE BALL PASSIVE;
@@ -251,7 +310,6 @@ function moveBalls(fromIndex, toIndex) {
         }
         return true; 
     } else {
-        // console.log("Ball is not moved.");
         return false; 
     }
 }
@@ -260,20 +318,19 @@ let fromIndex = 0;
 let toIndex = 81;
 
 if (moveBalls(fromIndex, toIndex, board)) {
-    // console.log("Move successful.");
-    // console.log("Array after move:", board);
 } else {
-    // console.log("Move failed.");
 }
 
 // ------------ Removing matching balls with the same color -----------------------
 
-function removeMatchingBalls() {
+function removeMatchingBalls(boardLength) {
 
-  let rows = 9; // Number of rows on the board --- NEED TO BE CHANGED from hard code to variable
-  let cols = 9; // Number of columns on the board --- NEED TO BE CHANGED from hard code to variable
+  const rows = boardLength; // Number of rows on the board --- NEED TO BE CHANGED from hard code to variable
+  const cols = boardLength; // Number of columns on the board --- NEED TO BE CHANGED from hard code to variable
   let removed = false; // Flag to track if any balls were removed
-  console.log("Rows value is " + boardLength) // RETURNS UNDEFINED
+  console.log("Rows value is " + rows);
+  console.log("Cols value is " + cols);
+  
   // Check for horizontal matches
   for (let row = 0; row < rows; row++) {
       for (let col = 0; col < cols - 2; col++) {
@@ -286,18 +343,23 @@ function removeMatchingBalls() {
               // Check if the next two cells in the row have the same color
               if (
                   board[currentIndex + 1]?.colorIndex === colorIndex &&
-                  board[currentIndex + 2]?.colorIndex === colorIndex 
-                  // board[currentIndex + 3]?.colorIndex === colorIndex &&
-                  // board[currentIndex + 4]?.colorIndex === colorIndex
-
+                  board[currentIndex + 2]?.colorIndex === colorIndex &&
+                  board[currentIndex + 3]?.colorIndex === colorIndex &&
+                  board[currentIndex + 4]?.colorIndex === colorIndex
+                  
                ) {
                   // Found a horizontal match of three balls of the same color
                   board[currentIndex] = null;
                   board[currentIndex + 1] = null;
                   board[currentIndex + 2] = null;
-                  // board[currentIndex + 3] = null;
-                  // board[currentIndex + 4] = null;
-
+                  board[currentIndex + 3] = null;
+                  board[currentIndex + 4] = null;
+                  console.log("horizontal removed Indexes are " + currentIndex);
+                  console.log(currentIndex + 1);
+                  console.log(currentIndex + 2);
+                  console.log(currentIndex + 3);
+                  console.log(currentIndex + 4);
+                
                   removed = true;
               }
           }
@@ -309,6 +371,7 @@ function removeMatchingBalls() {
       for (let row = 0; row < rows - 2; row++) {
           const currentIndex = row * cols + col;
           const currentCell = board[currentIndex];
+          // console.log("currentIndex", col, "nextIndex", row);
 
           if (currentCell) {
               const colorIndex = currentCell.colorIndex;
@@ -316,17 +379,23 @@ function removeMatchingBalls() {
               // Check if the next two cells in the column have the same color
               if (
                   board[currentIndex + cols]?.colorIndex === colorIndex &&
-                  board[currentIndex + 2 * cols]?.colorIndex === colorIndex
-                  // board[currentIndex + 3 * cols]?.colorIndex === colorIndex &&
-                  // board[currentIndex + 4 * cols]?.colorIndex === colorIndex
+                  board[currentIndex + 2 * cols]?.colorIndex === colorIndex &&
+                  board[currentIndex + 3 * cols]?.colorIndex === colorIndex &&
+                  board[currentIndex + 4 * cols]?.colorIndex === colorIndex
 
               ) {
                   // Found a vertical match of three balls of the same color
                   board[currentIndex] = null;
                   board[currentIndex + cols] = null;
                   board[currentIndex + 2 * cols] = null;
-                  // board[currentIndex + 3 * cols] = null;
-                  // board[currentIndex + 4 * cols] = null;
+                  board[currentIndex + 3 * cols] = null;
+                  board[currentIndex + 4 * cols] = null;
+
+                  console.log("vertical removed Indexes are " + currentIndex);
+                  console.log(currentIndex + cols);
+                  console.log(currentIndex + 2 * cols);
+                  console.log(currentIndex + 3 * cols);
+                  console.log(currentIndex + 4 * cols);
 
                   removed = true;
               }
@@ -335,8 +404,8 @@ function removeMatchingBalls() {
   }
 
    // Check for diagonal matches (from top-left to bottom-right)
-   for (let row = 0; row < rows - 2; row++) {
-    for (let col = 0; col < cols - 2; col++) {
+   for (let row = 0; row < rows - 4; row++) {
+    for (let col = 0; col < cols - 4; col++) {
         const currentIndex = row * cols + col;
         const currentCell = board[currentIndex];
 
@@ -346,13 +415,15 @@ function removeMatchingBalls() {
             // Check if the next four cells diagonally have the same color
             if (
                 board[currentIndex + cols + 1]?.colorIndex === colorIndex &&
-                board[currentIndex + 2 * cols + 2]?.colorIndex === colorIndex
-                // board[currentIndex + 3 * cols + 3]?.colorIndex === colorIndex &&
-                // board[currentIndex + 4 * cols + 4]?.colorIndex === colorIndex
+                board[currentIndex + 2 * cols + 2]?.colorIndex === colorIndex &&
+                board[currentIndex + 3 * cols + 3]?.colorIndex === colorIndex &&
+                board[currentIndex + 4 * cols + 4]?.colorIndex === colorIndex
             ) {
                 // Found a diagonal match of five balls of the same color
-                for (let i = 0; i < 3; i++) {
+                for (let i = 0; i < 5; i++) {
                     board[currentIndex + i * (cols + 1)] = null;
+                    console.log(currentIndex + i * (cols + 1));
+                    
                 }
                 removed = true;
             }
@@ -361,8 +432,8 @@ function removeMatchingBalls() {
 }
 
 // Check for diagonal matches (from top-right to bottom-left)
-for (let row = 0; row < rows - 2; row++) {
-    for (let col = 2; col < cols; col++) {
+for (let row = 0; row < rows - 4; row++) {
+    for (let col = 4; col < cols; col++) {
         const currentIndex = row * cols + col;
         const currentCell = board[currentIndex];
 
@@ -372,13 +443,14 @@ for (let row = 0; row < rows - 2; row++) {
             // Check if the next four cells diagonally have the same color
             if (
                 board[currentIndex + cols - 1]?.colorIndex === colorIndex &&
-                board[currentIndex + 2 * cols - 2]?.colorIndex === colorIndex
-                // board[currentIndex + 3 * cols - 3]?.colorIndex === colorIndex &&
-                // board[currentIndex + 4 * cols - 4]?.colorIndex === colorIndex
+                board[currentIndex + 2 * cols - 2]?.colorIndex === colorIndex &&
+                board[currentIndex + 3 * cols - 3]?.colorIndex === colorIndex &&
+                board[currentIndex + 4 * cols - 4]?.colorIndex === colorIndex
             ) {
                 // Found a diagonal match of five balls of the same color
-                for (let i = 0; i < 3; i++) {
+                for (let i = 0; i < 5; i++) {
                     board[currentIndex + i * (cols - 1)] = null;
+                    console.log(currentIndex + i * (cols - 1));
                 }
                 removed = true;
             }
@@ -408,34 +480,3 @@ let score = myScore(ballsRemoved);
 
 
 
-// function updateBoardVIew() {
-//   console.log(board);
-//   for (let i = 0; i < board.length; i++) {
-//       const cell = document.getElementById(i);
-//       const element = board[i];
-
-//       if (element) {
-//           const color = colors[element.colorIndex];
-          
-//           // Create a new colored div element
-//           const ballDiv = document.createElement("div");
-//           ballDiv.classList.add("ball", color);
-          
-//           // Remove any existing child elements and append the new colored div
-//           while (cell.firstChild) {
-//               cell.removeChild(cell.firstChild);
-//           }
-//           cell.appendChild(ballDiv);
-
-//           if (element.isActive) {
-//               cell.classList.add('active-ball');
-//           } else {
-//               cell.classList.remove('active-ball');
-//           }
-
-//       } else {
-//           cell.classList.remove(...cell.classList);
-//           cell.classList.add('grey');
-//       }
-//   }
-// }
