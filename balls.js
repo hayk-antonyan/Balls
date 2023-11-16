@@ -42,17 +42,7 @@ function initBoard(boardLength){
   }
 }
 
-// function startGame(){
-//   let boardLength = 9;
-//   const randomBallsCount = 3;
-//   initBoard(boardLength);
-//   creatBoardView();
-//   addRandomBalls();
-//   updateBoardVIew();
-// }
-// startGame();
-
-// Function to get selected option values and start the game
+// ---------------------- start the game ----------------------------
 function startGame() {
     
     // Clear the board
@@ -69,8 +59,6 @@ function startGame() {
     addRandomBalls(randomBallsCount);
     updateBoardVIew();
 
-
-
     // Calculate the width of each cell in pixels (assuming it's stored in a variable called 'cellWidth')
     let cellWidth;
 
@@ -82,8 +70,6 @@ function startGame() {
     } else {
         cellWidth = 33; // Adjust this value for smaller screens
     }
-
-
 
     // Calculate the total width of the container based on the boardLength and cellWidth
     const totalWidth = boardLength * cellWidth;
@@ -122,7 +108,6 @@ function creatBoardView(){
   }
 };
 
-
 function updateBoardVIew(){
   
   for (let i = 0; i < board.length; i++){
@@ -145,7 +130,6 @@ function updateBoardVIew(){
     }
   }
 }
-
 
 // function updateBoardVIew() {
 //   for (let i = 0; i < board.length; i++) {
@@ -190,7 +174,6 @@ function getEmptyCells() {
   }
   return emptyCells;   
 } 
-
 
 function getRandomBoardIndex(emptyCells){
 
@@ -280,8 +263,6 @@ if (!board[i] && activeBallIndex >= 0) {
   } 
   
 } 
-
-// ------------------------------------------------------------------------
 
 function activeBall(cellIndex) {
   // Deactivate all active cells
@@ -474,9 +455,5 @@ function myScore(ballsRemoved) {
 // Call myScore with the number of balls removed to update the count
 let ballsRemoved = removeMatchingBalls();
 let score = myScore(ballsRemoved);
-
 // console.log("Number of balls removed: " + ballsRemoved);
 // console.log("Total score: " + score);
-
-
-
