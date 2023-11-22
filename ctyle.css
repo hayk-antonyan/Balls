@@ -142,7 +142,7 @@ body{
 	display: inline-block;
 }
 .tableSizeTitle{
-	width: 70%;
+	width: 50%;
 	height: auto;
 	text-align: center;
 	background-color: white;
@@ -167,6 +167,28 @@ select option{
 	width: 50%;
 	height: auto;
 	float: left;
+	display: inline-block;
+}
+.removedBallsQty{
+	width:50%;
+	height: auto;
+	float: left;
+	display: block;
+	margin: 15px 25% 0 25%;
+}
+#removedQtySelect{
+	width: auto;
+	height: auto;
+	padding: 5px;
+}
+.removedTitle{
+	width: 70%;
+	height: auto;
+	text-align: center;
+	background-color: white;
+	border: 1px solid black;
+	padding: 5px;
+	cursor: pointer;
 	display: inline-block;
 }
 .reset_section{
@@ -213,41 +235,34 @@ select option{
 		width: 100%;
 		float: left;
 		display: block;
-		margin: 20px 0;
+		margin: 0 0 20px 0;
 		padding: 0;
+		font-size: 14px;
 	}
-	.ballsQty{
+	.ballsQty {
 		width: 100%;
 		float: left;
 		display: block;
 		margin: 0;
 		padding: 0;
+		font-size: 14px;
 	} 
+	.removedBallsQty{
+		width: 100%;
+		float: left;
+		display: block;
+		margin: 0;
+		padding: 0;
+	}
+	.removedTitle{
+		width: 50%;
+		margin-top: 20px;
+		font-size: 14px;
+	}
 	#score{
 		width: 100%;
 		margin: 10px 0;
 	}
-
-	/* .grey{
-		width: 40px;
-		height: 40px;
-	}
-	#white{
-		width: 40px;
-		height: 40px;
-	}
-	.ball{
-		width: 30px;
-		height: 30px;
-	}
-	.active-ball{
-		width: 30px;
-		height: 30px;
-	}
-	#grey_square{
-		width: 40px;
-		height: 40px;
-	} */
 }
 
 
