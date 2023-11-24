@@ -107,7 +107,7 @@ function creatBoardView(){
   for (let i = 0; i < board.length; i++) {  
     const printingDiv = document.createElement("div");
     printingDiv.setAttribute('id', i);
-    printingDiv.addEventListener('click',(e) => handleCellClick(e, i))
+    printingDiv.addEventListener('click',(e) => handleCellClick(e, i));
     printingDiv.textContent = board[i];
     printingDiv.classList.add("grey");
     containerElement.appendChild(printingDiv);
@@ -312,35 +312,70 @@ if (moveBalls(fromIndex, toIndex, board)) {
 
 // ------------ Removing matching balls with the same color -------------
 
-function removeMatchingBalls() {
-  
-  const removedBalls = removedBallsCount;
-  console.log("Received removed balls value is " + removedBalls);
-  let removed = false;
 
-  
-  for (let initialIndex = 0; initialIndex < board.length-removedBalls; initialIndex++){
-    if(board[initialIndex] !== null){
-      for (let currentIndex = 0; currentIndex < board[initialIndex].length - removedBalls + 1 ; currentIndex ++){
-        let colorIndex = board[initialIndex][currentIndex]?.colorIndex;
-      
-        if(colorIndex != undefined){
-          let isMatching = true;
-          for (let i = 1; i < removedBalls; i++){
-            if(board[initialIndex][currentIndex]?.colorIndex !== colorIndex){
-              isMatching = false;
-              break;
-            }
-          }
-          if( isMatching){
-            for(let i = 0; i< removedBalls; i++){
-              board[initialIndex][currentIndex +i].colorIndex = null; 
-            }
-              removed = true;
-          }
-        }
-      }
-    }
+
+// function removeMatchingBalls() {
+//   debugger
+//   const removedBalls = removedBallsCount;
+//   let removed = false;
+
+//   for (let initialIndex = 0; initialIndex < board.length - removedBalls; initialIndex++) {
+//     console.log("InitialIndex is "+ initialIndex);
+//     let row = board[initialIndex];
+
+//     if (row) {
+//       let currentIndex = 0;
+
+//       while (currentIndex < row.length - removedBalls + 1) {
+//         console.log("currentIndex is " + currentIndex); 
+//         let colorIndex = row[currentIndex]?.colorIndex;
+//           if (colorIndex !== undefined) {
+//           let isMatching = true;
+
+//           for (let i = 1; i < removedBalls; i++) {
+//             if (row[currentIndex + i]?.colorIndex !== colorIndex) {
+//               isMatching = false;
+//               break;
+//             }
+//           }
+
+//           if (isMatching) {
+//             for (let i = 0; i < removedBalls; i++) {
+//               row[currentIndex + i].colorIndex = null;
+//             }
+//             removed = true;
+//           }
+//         }
+
+//         currentIndex++;
+//       }
+//     }
+//   }
+
+//   return removed;
+// }
+
+
+function removeMatchingBalls(start, end, array){
+// ստուգում ենք if array is array or not
+  debugger
+    if (!array || !Array.isArray(array)) {
+      console.log("Array is not array");
+      return;
   }
-  return removed;
+  //  ստուգում ենք որ տրված արժեքները ճիշտ լինեն
+  if(start < 0 || start >= array.length || end < 0 || end >= array.length || start > end ){
+    console.log("Incorrect values");
+    return;
+  }
+  //  Ցիկլով տպում ենք ինդեքսները
+  for (let i = start; i <=end; i++){
+    console.log("Array indexes are " + array[i]);
+  } 
 }
+
+const myArray  = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+const startIndex = 3;
+const endIndex = 8;
+
+console.log(removeMatchingBalls(startIndex, endIndex, myArray));
