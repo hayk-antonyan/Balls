@@ -356,20 +356,25 @@ if (moveBalls(fromIndex, toIndex, board)) {
 // }
 
 
-function removeMatchingBalls(start, end, array){
-// ստուգում ենք if array is array or not
-  debugger
-    if (!array || !Array.isArray(array)) {
-      console.log("Array is not array");
-      return;
-  }
-  //  ստուգում ենք որ տրված արժեքները ճիշտ լինեն
-  if(start < 0 || start >= array.length || end < 0 || end >= array.length || start > end ){
-    console.log("Incorrect values");
-    return;
-  }
-  //  Ցիկլով տպում ենք ինդեքսները
-  for (let i = start; i <=end; i++){
+
+  //   if (!array || !Array.isArray(array)) {
+  //     console.log("Array is not array");
+  //     return;
+  // }
+
+  // if(start < 0 || start >= array.length || end < 0 || end >= array.length || start > end ){
+  //   console.log("Incorrect values");
+  //   return;
+  // }
+
+
+
+function removeMatchingBalls(start, count, array){
+
+  const removedBalls = removedBallsCount;
+  let removed = false;
+
+  for (let i = start; i <=count; i++){
     console.log("Array indexes are " + array[i]);
   } 
 }
@@ -378,4 +383,4 @@ const myArray  = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 const startIndex = 3;
 const endIndex = 8;
 
-console.log(removeMatchingBalls(startIndex, endIndex, myArray));
+removeMatchingBalls(startIndex, endIndex, myArray);
