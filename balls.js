@@ -371,16 +371,16 @@ if (moveBalls(fromIndex, toIndex, board)) {
 
 function removeMatchingBalls(start, count, array){
 
-  const removedBalls = removedBallsCount;
-  let removed = false;
+  // const removedBalls = removedBallsCount;
+  // let removed = false;
 
-  for (let i = start; i <=count; i++){
-    console.log("Array indexes are " + array[i]);
+  for (let i = start; i < start + count; i++){
+    alert("Array indexes are " + array[i]);
   } 
 }
 
 const myArray  = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
-const startIndex = 3;
-const endIndex = 8;
+const startIndex = 5;
+const countIndex = 2;
 
-removeMatchingBalls(startIndex, endIndex, myArray);
+removeMatchingBalls(startIndex, countIndex, myArray);
