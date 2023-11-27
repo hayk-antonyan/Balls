@@ -312,8 +312,6 @@ if (moveBalls(fromIndex, toIndex, board)) {
 
 // ------------ Removing matching balls with the same color -------------
 
-
-
 // function removeMatchingBalls() {
 //   debugger
 //   const removedBalls = removedBallsCount;
@@ -356,31 +354,69 @@ if (moveBalls(fromIndex, toIndex, board)) {
 // }
 
 
+// function removeMatchingBalls(start, count, array){
 
-  //   if (!array || !Array.isArray(array)) {
-  //     console.log("Array is not array");
-  //     return;
-  // }
+// const myArray  = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+// const startIndex = 5;
+// const countIndex = 2;
 
-  // if(start < 0 || start >= array.length || end < 0 || end >= array.length || start > end ){
-  //   console.log("Incorrect values");
-  //   return;
-  // }
+// removeMatchingBalls(startIndex, countIndex, myArray);
 
 
+function removeMatchingBalls() {
+  const removedBalls = removedBallsCount;
+  console.log("Balls to be removed are " + removedBalls);
+  let removed = false;
 
-function removeMatchingBalls(start, count, array){
+  const checkArea = board.length - removedBalls;
+  console.log("The checkArea is " + checkArea);
 
-  // const removedBalls = removedBallsCount;
-  // let removed = false;
+  for (let initialIndex = 0; initialIndex < checkArea; initialIndex++) {
+    let matchingBallsCount = 0;
+    let colorIndexToMatch = null;
 
-  for (let i = start; i < start + count; i++){
-    alert("Array indexes are " + array[i]);
-  } 
+    for (let i = 0; i < removedBalls; i++) {
+      // console.log(`Outer loop index: ${initialIndex}, Inner loop index: ${i}`);
+
+      // Ensure the ball at the current index is not null or undefined
+      const currentBall = board[initialIndex + i];
+      if (!currentBall) {
+        break; // Exit the loop if the ball is null or undefined
+      }
+
+      // Assuming each ball has a 'color' property
+      const color = currentBall.color;
+      console.log("color is " + color);
+      if (colorIndexToMatch === null) {
+        // First ball in the sequence
+        colorIndexToMatch = color;
+        matchingBallsCount = 1;
+      } else if (color === colorIndexToMatch) {
+        // Ball has the same color as the previous ones
+        matchingBallsCount++;
+      } else {
+        // Ball has a different color, reset the count
+        // colorIndexToMatch = color;
+        // matchingBallsCount = 1;
+        break;
+      }
+
+      if (matchingBallsCount === removedBalls) {
+        // Found a sequence of matching balls, remove them
+        for (let j = 0; j < removedBalls; j++) {
+          board.splice(initialIndex + j, 1);
+        }
+        removed = true;
+        break; // No need to check further in this iteration
+      }
+    }
+  }
+
+  if (removed) {
+    console.log("Balls removed:", board);
+  } else {
+    console.log("No matching balls found.");
+  }
+  return removed;
 }
 
-const myArray  = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
-const startIndex = 5;
-const countIndex = 2;
-
-removeMatchingBalls(startIndex, countIndex, myArray);
