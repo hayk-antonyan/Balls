@@ -237,6 +237,7 @@ if (!board[i] && activeBallIndex >= 0) {
 
   } else {
       addRandomBalls(randomBallsCount);
+      removeMatchingBalls();
       updateBoardVIew();
       setTimeout(() => {
         handleCellClick(null, null);
@@ -367,16 +368,16 @@ function removeMatchingBalls() {
     let matchingBallsCount = 0;
     let colorIndexToMatch = null;
 
-    for (let i = 0; i < removedBalls; i++) {
+    for (let i = 0; i <= removedBalls; i++) {
       // console.log(`Outer loop index: ${initialIndex}, Inner loop index: ${i}`);
 
       // Ensure the ball at the current index is not null or undefined
       const currentBall = board[initialIndex + i];
-      console.log(currentBall);
+      // console.log(currentBall);
       if (!currentBall) {
         break; // Exit the loop if the ball is null or undefined
       }
-      // Assuming each ball has a 'color' property
+      
       const colorIndex = currentBall.colorIndex;
       console.log("colorindex is " + colorIndex);
       if (colorIndexToMatch === null) {
@@ -397,6 +398,42 @@ function removeMatchingBalls() {
         }
         removed = true;
         break; 
+      }
+    }
+  }
+
+  // Check vertically
+  const columns = boardLength;
+  console.log("Column width is " + columns);
+  for (let columnIndex = 0; columnIndex < columns; columnIndex++) {
+    let matchingBallsCount = 0;
+    let colorIndexToMatch = null;
+
+    for (let rowIndex = 0; rowIndex < board.length/columns; rowIndex++) {
+      const currentBall = board[rowIndex * columns + columnIndex];
+      console.log(currentBall);
+      if (!currentBall) {
+        break;
+      }
+
+      const colorIndex = currentBall.colorIndex;
+
+      if (colorIndexToMatch === null) {
+        colorIndexToMatch = colorIndex;
+        matchingBallsCount = 1;
+      } else if (colorIndex === colorIndexToMatch) {
+        matchingBallsCount++;
+      } else {
+        break;
+      }
+
+      if (matchingBallsCount === removedBalls) {
+        // Found a sequence of matching balls, remove them
+        for (let j = 0; j < removedBalls; j++) {
+          board[(rowIndex - removedBalls + 1 + j) * columns + columnIndex] = null;
+        }
+        removed = true;
+        break; // No need to check further in this iteration
       }
     }
   }
