@@ -1,11 +1,3 @@
-// functions:
-// rundomNumber, randomIndex
-// վերցնել զանգվածի դատարկ անդամները և պահել նոր array-ի մեջ, 
-// ամեն անգամ ստուգել դատարկ վանդակները, դրանք հանել ցանկից,
-//  ավելացնել գնդակ, նորից ստուգել, նորից ստուգել դատարկ վանդակները,  
-
-
-// Retrieve totalBallsRemoved from localStorage, or use 0 if it's not set
 
 let randomBallsCount = 3;
 let totalBallsRemoved = 0;
@@ -380,34 +372,31 @@ function removeMatchingBalls() {
 
       // Ensure the ball at the current index is not null or undefined
       const currentBall = board[initialIndex + i];
+      console.log(currentBall);
       if (!currentBall) {
         break; // Exit the loop if the ball is null or undefined
       }
-
       // Assuming each ball has a 'color' property
-      const color = currentBall.color;
-      console.log("color is " + color);
+      const colorIndex = currentBall.colorIndex;
+      console.log("colorindex is " + colorIndex);
       if (colorIndexToMatch === null) {
         // First ball in the sequence
-        colorIndexToMatch = color;
+        colorIndexToMatch = colorIndex;
         matchingBallsCount = 1;
-      } else if (color === colorIndexToMatch) {
+      } else if (colorIndex === colorIndexToMatch) {
         // Ball has the same color as the previous ones
         matchingBallsCount++;
       } else {
-        // Ball has a different color, reset the count
-        // colorIndexToMatch = color;
-        // matchingBallsCount = 1;
-        break;
+          break;
       }
-
+      debugger
       if (matchingBallsCount === removedBalls) {
-        // Found a sequence of matching balls, remove them
+        // Remove matching balls
         for (let j = 0; j < removedBalls; j++) {
-          board.splice(initialIndex + j, 1);
+          board[initialIndex + j] = null;
         }
         removed = true;
-        break; // No need to check further in this iteration
+        break; 
       }
     }
   }
