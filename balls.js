@@ -237,7 +237,7 @@ if (!board[i] && activeBallIndex >= 0) {
 
   } else {
       addRandomBalls(randomBallsCount);
-      removeMatchingBalls();
+      // removeMatchingBalls();
       updateBoardVIew();
       setTimeout(() => {
         handleCellClick(null, null);
@@ -310,7 +310,7 @@ function removeMatchingBalls() {
   // console.log("Balls to be removed in row are " + removedBalls);
   let removed = false;
 
-  const checkArea = board.length - removedBalls;
+  const checkArea = board.length - removedBalls + 1;
   // console.log("The checkArea is " + checkArea);
 
   // Horizontal check
@@ -330,7 +330,7 @@ function removeMatchingBalls() {
       }
       
       const colorIndex = currentBall.colorIndex;
-      console.log("colorindex is " + colorIndex);
+      // console.log("colorindex is " + colorIndex);
       if (colorIndexToMatch === null) {
         // First ball in the sequence
         colorIndexToMatch = colorIndex;
