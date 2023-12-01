@@ -311,177 +311,65 @@ if (moveBalls(fromIndex, toIndex, board)) {
 // ------------ Removing matching balls with the same color -------------
 // One problem exists: if there are the balls with the same color in two lines, they become deleted  
 
+
 function removeMatchingBalls() {
   const removedBalls = removedBallsCount;
-  // console.log("Balls to be removed in row are " + removedBalls);
   let removed = false;
-
   const checkArea = board.length - removedBalls + 1;
-  // console.log("The checkArea is " + checkArea);
 
   // Horizontal check
-
   for (let initialIndex = 0; initialIndex < checkArea; initialIndex++) {
+    if (!board[initialIndex]) {
+      continue;
+    }
+
     let matchingBallsCount = 0;
     let colorIndexToMatch = null;
-
-    for (let i = 0; i < removedBalls; i++) {
+    const initialBallCurrentIndex = board[initialIndex].colorIndex;
+        
+    for (let i = initialIndex; i < initialIndex + removedBalls; i++) {
       console.log(`Outer loop index: ${initialIndex}, Inner loop index: ${i}`);
-
-      // Ensure the ball at the current index is not null or undefined
-      const currentBall = board[initialIndex + i];
-      // console.log(currentBall);
-      if (!currentBall) {
-        break; // Exit the loop if the ball is null or undefined
-      }
       
-      const colorIndex = currentBall.colorIndex;
-      console.log("colorindex is " + colorIndex);
-      if (colorIndexToMatch === null) {
-        // First ball in the sequence
-        colorIndexToMatch = colorIndex;
-        matchingBallsCount = 1;
-      } else if (colorIndex === colorIndexToMatch) {
-        // Ball has the same color as the previous ones
-        matchingBallsCount++;
-      } else {
-          break; //Ball has not the same color as the previus ones
+      const currentBall = board[i];
+      
+      if (!currentBall) {
+        break; // Break if there's no ball at the current index
       }
       debugger
+      if (colorIndexToMatch === null) {
+        colorIndexToMatch = currentBall.colorIndex;
+        colorIndexToMatch = initialBallCurrentIndex;
+        console.log("Color index is " + initialBallCurrentIndex);
+        matchingBallsCount = 1;
+      } else if (currentBall.colorIndex === colorIndexToMatch) {
+        matchingBallsCount++;
+        console.log("Matching balls count is " + matchingBallsCount);
+      } else {
+          break;
+      }
       if (matchingBallsCount === removedBalls) {
         // Remove matching balls
-        for (let j = 0; j < removedBalls; j++) {
-          board[initialIndex + j] = null;
-        }
+        removeMatchingBallsAtIndex(initialIndex, removedBalls);
         removed = true;
         break; 
       }
     }
   }
+
   
-
-  // Check vertically
-  const columns = boardLength;
-  for (let columnIndex = 0; columnIndex < board.length; columnIndex++) {
-  // console.log("Balls to be removed in col are " + removedBalls);
-
-    let matchingBallsCount = 0;
-    let colorIndexToMatch = null;
-
-    for (let rowIndex = 0; rowIndex < board.length/columns; rowIndex++) {
-      // console.log(`Outer loop index: ${columnIndex}, Inner loop index: ${rowIndex}`);
-      const currentBall = board[rowIndex * columns + columnIndex];
-      // console.log(currentBall);
-      if (!currentBall) {
-        break;
-      }
-
-      const colorIndex = currentBall.colorIndex;
-      // console.log("Colorindex is " + currentBall.colorIndex);
-
-      if (colorIndexToMatch === null) {
-        colorIndexToMatch = colorIndex;
-        matchingBallsCount = 1;
-      } else if (colorIndex === colorIndexToMatch) {
-        matchingBallsCount++;
-      } else {
-        continue;
-      }
-
-      if (matchingBallsCount === removedBalls) {
-        // Found a sequence of matching balls, remove them
-        for (let j = 0; j < removedBalls; j++) {
-          board[(rowIndex - removedBalls + 1 + j) * columns + columnIndex] = null;
-        }
-        removed = true;
-        break; // No need to check further in this iteration
-      }
-    }
-  }
-
-// Diagonal matchings from top-left to bottom-right
-
-  const diagonals = boardLength;
-  for (let initialIndex = 0; initialIndex < board.length; initialIndex++) {
-  // console.log("Balls to be removed in diagonal are " + removedBalls);
-
-    let matchingBallsCount = 0;
-    let colorIndexToMatch = null;
-
-    for (let rowIndex = 0; rowIndex < removedBalls; rowIndex++) {
-      console.log(`Outer loop index: ${initialIndex}, Inner loop index: ${rowIndex}`);
-      const currentBall = board[initialIndex + rowIndex * (diagonals + 1)];
-      console.log("Current diagonal ball is " + currentBall);
-      if (!currentBall) {
-        break;
-      }
-
-      const colorIndex = currentBall.colorIndex;
-      console.log("Colorindex is " + currentBall.colorIndex);
-
-      if (colorIndexToMatch === null) {
-        colorIndexToMatch = colorIndex;
-        matchingBallsCount = 1;
-      } else if (colorIndex === colorIndexToMatch) {
-        matchingBallsCount++;
-      } else {
-        continue;
-      }
-
-      if (matchingBallsCount === removedBalls) {
-        // Found a sequence of matching balls, remove them
-        for (let j = 0; j < removedBalls; j++) {
-          board[initialIndex + j * (diagonals + 1)] = null;
-        }
-        removed = true;
-        break; // No need to check further in this iteration
-      }
-    }
-  }
-
-// Diagonal matchings from top-right to bottom-left
-
-  for (let initialIndex = 0; initialIndex < board.length; initialIndex++) {
-  // console.log("Balls to be removed in diagonal are " + removedBalls);
-
-    let matchingBallsCount = 0;
-    let colorIndexToMatch = null;
-
-    for (let rowIndex = 0; rowIndex < removedBalls; rowIndex++) {
-      console.log(`Outer loop index: ${initialIndex}, Inner loop index: ${rowIndex}`);
-      const currentBall = board[initialIndex + rowIndex * (diagonals - 1)];
-      console.log("Current diagonal ball is " + currentBall);
-      if (!currentBall) {
-        break;
-      }
-
-      const colorIndex = currentBall.colorIndex;
-      console.log("Colorindex is " + currentBall.colorIndex);
-
-      if (colorIndexToMatch === null) {
-        colorIndexToMatch = colorIndex;
-        matchingBallsCount = 1;
-      } else if (colorIndex === colorIndexToMatch) {
-        matchingBallsCount++;
-      } else {
-        continue;
-      }
-
-      if (matchingBallsCount === removedBalls) {
-        // Found a sequence of matching balls, remove them
-        for (let j = 0; j < removedBalls; j++) {
-          board[initialIndex + j * (diagonals - 1)] = null;
-        }
-        removed = true;
-        break; // No need to check further in this iteration
-      }
-    }
-  }
-
+  
   if (removed) {
     console.log("Balls removed:", board);
   } else {
     console.log("No matching balls found.");
   }
+  
   return removed;
+}
+
+function removeMatchingBallsAtIndex(initialIndex, removedBalls) {
+  // Remove matching balls
+  for (let j = 0; j < removedBalls; j++) {
+    board[initialIndex + j] = null;
+  }
 }
