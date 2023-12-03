@@ -187,22 +187,18 @@ function getRandomColorIndex(){
 }
 // -------------------------------------------------------------------------
 function addRandomBalls(randomBallsCount) {
-  let ballsAdded = 0;
   for (let i = 0; i < randomBallsCount; i++) {
       const emptyCells = getEmptyCells();
       if (emptyCells.length > 0) {
           let randomBoardIndex = getRandomBoardIndex(emptyCells);
           const randomColor = getRandomColorIndex();
-
        
           board[randomBoardIndex] = { colorIndex: randomColor, isActive: false };
-          ballsAdded++;
       }
   }
-  return ballsAdded;
 }
 // -------------------------------------------------------------------------
-async function handleCellClick(e, i, ballsAdded){
+async function handleCellClick(e, i){
   
 const activeBallIndex = board.findIndex(element => element !== null && element.isActive);
 // case 1: if board i is empty and activeBall is null => return 
@@ -227,8 +223,6 @@ if (!board[i] && activeBallIndex >= 0) {
 
       // Use async function to wait for the board to be updated before calling addRandomBalls
       await new Promise(resolve => setTimeout(resolve, 0));
-
-      // const newBallsAdded  = addRandomBalls(randomBallsCount);
       
       updateBoardVIew();
 
@@ -239,10 +233,9 @@ if (!board[i] && activeBallIndex >= 0) {
   } else {
       addRandomBalls(randomBallsCount);
       updateBoardVIew();
-      removeMatchingBalls();
-      updateBoardVIew();
-      setTimeout(() => {
       handleCellClick(null, null);
+      setTimeout(() => {
+      
     }, 0);
   }
   return;
@@ -311,65 +304,121 @@ if (moveBalls(fromIndex, toIndex, board)) {
 // ------------ Removing matching balls with the same color -------------
 // One problem exists: if there are the balls with the same color in two lines, they become deleted  
 
-
 function removeMatchingBalls() {
   const removedBalls = removedBallsCount;
   let removed = false;
   const checkArea = board.length - removedBalls + 1;
-
-  // Horizontal check
+ 
+  // first loop
   for (let initialIndex = 0; initialIndex < checkArea; initialIndex++) {
     if (!board[initialIndex]) {
       continue;
     }
+    // Horizontal check
+    let indexesToRemove = checkHorizontal(initialIndex, removedBalls);
+    if(indexesToRemove.length){
+      // alert(indexesToRemove.join(","));
+      removeBalls(indexesToRemove);
+    }   
 
-    let matchingBallsCount = 0;
-    let colorIndexToMatch = null;
-    const initialBallCurrentIndex = board[initialIndex].colorIndex;
-        
-    for (let i = initialIndex; i < initialIndex + removedBalls; i++) {
-      console.log(`Outer loop index: ${initialIndex}, Inner loop index: ${i}`);
-      
-      const currentBall = board[i];
-      
-      if (!currentBall) {
-        break; // Break if there's no ball at the current index
-      }
-      debugger
-      if (colorIndexToMatch === null) {
-        colorIndexToMatch = currentBall.colorIndex;
-        colorIndexToMatch = initialBallCurrentIndex;
-        console.log("Color index is " + initialBallCurrentIndex);
-        matchingBallsCount = 1;
-      } else if (currentBall.colorIndex === colorIndexToMatch) {
-        matchingBallsCount++;
-        console.log("Matching balls count is " + matchingBallsCount);
-      } else {
-          break;
-      }
-      if (matchingBallsCount === removedBalls) {
-        // Remove matching balls
-        removeMatchingBallsAtIndex(initialIndex, removedBalls);
-        removed = true;
-        break; 
-      }
-    }
+    // Vertical check
+    indexesToRemove = checkVertical(initialIndex, removedBalls);
+    if(indexesToRemove.length){
+      alert(indexesToRemove.join(","));
+      removeBalls(indexesToRemove);
+    }   
+
   }
-
-  
-  
   if (removed) {
     console.log("Balls removed:", board);
   } else {
     console.log("No matching balls found.");
   }
-  
   return removed;
 }
 
-function removeMatchingBallsAtIndex(initialIndex, removedBalls) {
-  // Remove matching balls
-  for (let j = 0; j < removedBalls; j++) {
-    board[initialIndex + j] = null;
+
+function checkHorizontal(initialIndex, removedBalls){
+  let indexes = [initialIndex];
+  let colorIndexToMatch = board[initialIndex].colorIndex;
+
+  for (let i = initialIndex + 1; i < initialIndex + removedBalls; i++) {   
+    if (!board[i] || colorIndexToMatch !== board[i].colorIndex) {
+      indexes = [];
+      break; // Break if there's no ball at the current index
+    }
+    indexes.push(i);
+    continue;
   }
+  return indexes;
 }
+
+function checkVertical(initialIndex, removedBalls){
+  const columns = boardLength;
+  let indexes = [initialIndex];
+  let colorIndexToMatch = board[initialIndex * columns + i].colorIndex;
+  
+  // const rowBall = board[initialIndex * columns + i];
+
+  for (let i = initialIndex + 1; i < board.length/columns; i++) {   
+    if (!board[i] || colorIndexToMatch !== board[i].colorIndex) {
+      indexes = [];
+      break; // Break if there's no ball at the current index
+    }
+    indexes.push(i);
+    continue;
+  }
+  return indexes;
+}
+
+function removeBalls(indexesToRemove) {
+// let removedIndexes = indexesToRemove;
+ for (let j = 0; j < indexesToRemove.length; j++){
+  const currentIndex = indexesToRemove[j];
+  board[currentIndex] = null;
+ }   
+}
+
+
+
+
+  // Vertical check
+  // for (let initialIndex = 0; initialIndex < board.length; initialIndex++) {
+  //   if (!board[initialIndex]) {
+  //     continue;
+  //   }
+
+  //   let matchingBallsCount = 0;
+  //   let colorIndexToMatch = null;
+  //   const columns = boardLength;
+
+  //     for (let col = initialIndex; col < board.length/columns; col++) {
+  //     console.log(`Outer loop index: ${initialIndex}, Inner loop index: ${col}`);
+  //     const rowBall = board[initialIndex * columns + col];
+      
+  //     if (!rowBall) {
+  //       break; // Break if there's no ball at the current index
+  //     }
+  //     debugger
+
+  //     if (colorIndexToMatch === null) {
+  //       colorIndexToMatch = rowBall.colorIndex;
+  //       console.log("Colorindex is " + colorIndexToMatch);
+  //       // console.log("Color index is " + initialBallCurrentIndex);
+  //       matchingBallsCount = 1;
+  //     } else if (rowBall.colorIndex === colorIndexToMatch) {
+  //       matchingBallsCount++;
+  //       console.log("Matching balls count is " + matchingBallsCount);
+  //     } else {
+  //         break;
+  //     }
+  //     if (matchingBallsCount === removedBalls) {
+  //       // Remove matching balls
+  //       removeBalls(initialIndex, removedBalls);
+  //       removed = true;
+  //       break; 
+  //     }
+  //   }
+  // }
+  
+ 
